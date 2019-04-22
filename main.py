@@ -1,15 +1,23 @@
+"""
+This is the main file for Animation creator.
+
+Animation creator is a simple tools for create the
+2D skeleton animation and export it to GIF or atlas.
+"""
+
 import tkinter
 
-class Project: # Model class
-    pass
+#class Project:
+#    """Model in our MVC framework"""
 
-class View:
-    pass
+#class View:
+#    pass
 
-class Controller:
-    pass
+#class Controller:
+#    pass
 
 class MainWindow(tkinter.Tk):
+    """This is main window of the aplication. It contains static UI."""
     def __init__(self):
         tkinter.Tk.__init__(self)
         self.title("Animation creator")
@@ -26,5 +34,5 @@ class MainWindow(tkinter.Tk):
         self.main_menu.add_cascade(label="File", menu=file_menu)
 
 if __name__ == "__main__":
-    app = MainWindow()
-    app.mainloop()
+    APP = MainWindow()
+    APP.mainloop()
