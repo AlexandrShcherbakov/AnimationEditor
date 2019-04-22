@@ -6,6 +6,7 @@ Animation creator is a simple tools for create the
 """
 
 import tkinter
+import tkinter.ttk
 
 #class Project:
 #    """Model in our MVC framework"""
@@ -24,7 +25,7 @@ class MainWindow(tkinter.Tk):
         self.title("Animation creator")
         self._init_menu()
         self._init_work_area()
-        self.geometry("500x350+300+300")
+        self.geometry("950x550+300+300")
 
     def _init_menu(self):
         self.main_menu = tkinter.Menu(self)
@@ -60,7 +61,13 @@ class MainWindow(tkinter.Tk):
         self.columnconfigure(2, weight=1)
 
         self.canvas = tkinter.Canvas(background="white")
-        self.canvas.grid(column=0, sticky=tkinter.N+tkinter.E+tkinter.S+tkinter.W)
+        self.canvas.grid(row=0, column=0, sticky=tkinter.N+tkinter.E+tkinter.S+tkinter.W)
+
+        self.options = tkinter.Frame(background="blue")
+        self.options.grid(row=0, column=1, sticky=tkinter.N+tkinter.E+tkinter.S+tkinter.W)
+
+        self.project_view = tkinter.ttk.Treeview()
+        self.project_view.grid(row=0, column=2, sticky=tkinter.N+tkinter.E+tkinter.S+tkinter.W)
 
 if __name__ == "__main__":
     APP = MainWindow()
