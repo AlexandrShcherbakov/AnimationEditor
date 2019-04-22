@@ -16,12 +16,14 @@ import tkinter
 #class Controller:
 #    pass
 
+
 class MainWindow(tkinter.Tk):
     """This is main window of the aplication. It contains static UI."""
     def __init__(self):
         tkinter.Tk.__init__(self)
         self.title("Animation creator")
         self._init_menu()
+        self._init_work_area()
         self.geometry("500x350+300+300")
 
     def _init_menu(self):
@@ -50,6 +52,15 @@ class MainWindow(tkinter.Tk):
         help_menu = tkinter.Menu(self.main_menu)
         help_menu.add_command(label="Help")
         self.main_menu.add_cascade(label="Help", menu=help_menu)
+
+    def _init_work_area(self):
+        self.rowconfigure(0, weight=1)
+        self.columnconfigure(0, weight=1)
+        self.columnconfigure(1, weight=1)
+        self.columnconfigure(2, weight=1)
+
+        self.canvas = tkinter.Canvas(background="white")
+        self.canvas.grid(column=0, sticky=tkinter.N+tkinter.E+tkinter.S+tkinter.W)
 
 if __name__ == "__main__":
     APP = MainWindow()
