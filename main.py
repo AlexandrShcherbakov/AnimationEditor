@@ -22,6 +22,7 @@ class MainWindow(tkinter.Tk):
         tkinter.Tk.__init__(self)
         self.title("Animation creator")
         self._init_menu()
+        self.geometry("500x350+300+300")
 
     def _init_menu(self):
         self.main_menu = tkinter.Menu(self)
