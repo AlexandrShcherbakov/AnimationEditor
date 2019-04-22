@@ -33,6 +33,19 @@ class MainWindow(tkinter.Tk):
         file_menu.add_command(label="Exit", command=self.quit)
         self.main_menu.add_cascade(label="File", menu=file_menu)
 
+        edit_menu = tkinter.Menu(self.main_menu)
+        edit_menu.add_command(label="Redo")
+        edit_menu.add_command(label="Undo")
+
+        add_menu = tkinter.Menu(edit_menu)
+        add_menu.add_command(label="Animation")
+        add_menu.add_command(label="State")
+        add_menu.add_command(label="Skeleton")
+        add_menu.add_command(label="Bone")
+
+        edit_menu.add_cascade(label="Add", menu=add_menu)
+        self.main_menu.add_cascade(label="Edit", menu=edit_menu)
+
 if __name__ == "__main__":
     APP = MainWindow()
     APP.mainloop()
