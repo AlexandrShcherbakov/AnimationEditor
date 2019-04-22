@@ -47,6 +47,10 @@ class MainWindow(tkinter.Tk):
         edit_menu.add_cascade(label="Add", menu=add_menu)
         self.main_menu.add_cascade(label="Edit", menu=edit_menu)
 
+        help_menu = tkinter.Menu(self.main_menu)
+        help_menu.add_command(label="Help")
+        self.main_menu.add_cascade(label="Help", menu=help_menu)
+
 if __name__ == "__main__":
     APP = MainWindow()
     APP.mainloop()
