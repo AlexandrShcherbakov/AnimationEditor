@@ -9,6 +9,11 @@ class View:
 class Controller:
     pass
 
+class MainWindow(tkinter.Tk):
+    def __init__(self):
+        tkinter.Tk.__init__(self)
+        self.title("Animation creator")
+
 if __name__ == "__main__":
-    app = tkinter.Frame()
+    app = MainWindow()
     app.mainloop()
