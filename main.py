@@ -8,6 +8,9 @@ Animation creator is a simple tools for create the
 import tkinter
 import tkinter.ttk
 
+import command
+import model
+
 #class Project:
 #    """Model in our MVC framework"""
 
@@ -38,8 +41,8 @@ class MainWindow(tkinter.Tk):
         self.main_menu.add_cascade(label="File", menu=file_menu)
 
         edit_menu = tkinter.Menu(self.main_menu)
-        edit_menu.add_command(label="Redo")
-        edit_menu.add_command(label="Undo")
+        edit_menu.add_command(label="Redo", command=commands.redo)
+        edit_menu.add_command(label="Undo", command=commands.undo)
 
         add_menu = tkinter.Menu(edit_menu)
         add_menu.add_command(label="Animation")
@@ -69,6 +72,10 @@ class MainWindow(tkinter.Tk):
         self.project_view = tkinter.ttk.Treeview()
         self.project_view.grid(row=0, column=2, sticky=tkinter.N+tkinter.E+tkinter.S+tkinter.W)
 
+
 if __name__ == "__main__":
+    project = model.Project()
+    commands = command.CommandList(project)
+
     APP = MainWindow()
     APP.mainloop()

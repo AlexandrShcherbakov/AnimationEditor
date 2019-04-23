@@ -28,6 +28,9 @@ class Project:
     skeletons = list()
     animations = list()
 
+    def __init__(self):
+        self.active_element = self
+
     @staticmethod
     def has_skeleton(name):
         return any(name == skeleton.name for skeleton in Project.skeletons)
@@ -35,6 +38,10 @@ class Project:
     @staticmethod
     def has_animation(name):
         return any(name == animation.name for animation in Project.animations)
+
+    @property
+    def number_of_skeletons(self):
+        return len(self.skeletons)
 
     @staticmethod
     def load():
@@ -47,6 +54,12 @@ class Project:
             if filename.endswith('.json'):
                 animation = Animation(name=filename[:-5])
                 animation.load()
+
+    def add_skeleton(self, skeleton):
+        self.skeletons.append(skeleton)
+
+    def remove_skeleton(self, skeleton_id: int):
+        self.skeletons.pop(skeleton_id)
 
 
 class Bone(ABC):
