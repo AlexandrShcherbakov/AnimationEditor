@@ -4,22 +4,26 @@ animation editing in the project.
 """
 
 class CommandList:
+    """This class manages commands queue"""
     def __init__(self, model):
         self.model = model
         self.commands = list()
         self.last_id = -1
 
     def add_command(self, command):
+        """Add command and apply"""
         self.commands.append(command)
         self.redo()
 
     def undo(self):
+        """Revert last command"""
         if self.last_id == -1:
             return
         self.commands[self.last_id].revert()
         self.last_id -= 1
 
     def redo(self):
+        """Redo next command"""
         if self.last_id + 1 == len(self.commands):
             return
         self.last_id += 1
