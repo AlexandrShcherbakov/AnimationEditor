@@ -5,14 +5,86 @@ Animation creator is a simple tools for create the
 2D skeleton animation and export it to GIF or atlas.
 """
 
+import os
 import tkinter
 import tkinter.ttk
 
+from model import Skeleton, Animation
+from settings import ProjectSettings
 import command
-import model
 
-#class Project:
-#    """Model in our MVC framework"""
+
+class Project:
+    """
+    Main class of the project.
+    Contains lists of entities (skeletons and animations).
+    """
+
+    def __init__(self):
+        self.active_element = self
+
+        self.__skeletons = list()
+        self.__animations = list()
+
+    def has_skeleton(self, name: str):
+        return any(name == skeleton.name for skeleton in self.__skeletons)
+
+    def has_animation(self, name: str):
+        return any(name == animation.name for animation in self.__animations)
+
+    def get_skeleton(self, name: str):
+        return list(filter(lambda s: s.name == name, self.__skeletons))[0] if self.has_skeleton(name) else None
+
+    def get_animation(self, name: str):
+        return list(filter(lambda a: a.name == name, self.__animations))[0] if self.has_animation(name) else None
+
+    @property
+    def number_of_skeletons(self):
+        return len(self.__skeletons)
+
+    @property
+    def number_of_animations(self):
+        return len(self.__animations)
+
+    def add_skeleton(self, skeleton: Skeleton):
+        if not self.has_skeleton(skeleton.name):
+            self.__skeletons.append(skeleton)
+        else:
+            raise NameError(f'Skeleton with name {skeleton.name} already exists in the project.')
+
+    def remove_skeleton(self, skeleton_id: int):
+        if skeleton_id < self.number_of_skeletons:
+            self.__skeletons.pop(skeleton_id)
+        else:
+            raise IndexError(f'Project does not have a skeleton with index {skeleton_id}. '
+                             f'It has only {self.number_of_skeletons} skeletons.')
+
+    def add_animation(self, animation: Animation):
+        if not self.has_animation(animation.name):
+            self.__animations.append(animation)
+        else:
+            raise NameError(f'Animation with name {animation.name} already exists in the project.')
+
+    def remove_animation(self, animation_id: int):
+        if animation_id < self.number_of_animations:
+            self.__animations.pop(animation_id)
+        else:
+            raise IndexError(f'Project does not have an animation with index {animation_id}. '
+                             f'It has only {self.number_of_animations} animations.')
+
+    def load(self):
+        for filename in os.listdir(ProjectSettings.skeletons_dir):
+            if filename.endswith('.json'):
+                skeleton = Skeleton(name=filename[:-5])
+                skeleton.load()
+                self.add_skeleton(skeleton)
+
+        for filename in os.listdir(ProjectSettings.animations_dir):
+            if filename.endswith('.json'):
+                animation = Animation(name=filename[:-5])
+                skeleton_name = animation.load()
+                animation.set_skeleton(self.get_skeleton(skeleton_name))
+                self.add_animation(animation)
 
 #class View:
 #    pass
@@ -74,7 +146,7 @@ class MainWindow(tkinter.Tk):
 
 
 if __name__ == "__main__":
-    project = model.Project()
+    project = Project()
     commands = command.CommandList(project)
 
     APP = MainWindow()
