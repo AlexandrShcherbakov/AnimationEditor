@@ -1,0 +1,20 @@
+{
+  "name": "Vasiliy",
+  "bones": [
+    {
+      "position": [
+        0,
+        0
+      ],
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "thickness": 1.0,
+      "length": 10,
+      "rotation": 2,
+      "type": "SEGMENT"
+    }
+  ]
+}
