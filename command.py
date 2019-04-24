@@ -29,6 +29,10 @@ class CommandList:
         self.last_id += 1
         self.commands[self.last_id].apply(self.model)
 
+    def reset(self):
+        self.commands = list()
+        self.last_id = -1
+
 
 class PatchCommand:
     """Command which change an element."""

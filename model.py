@@ -3,63 +3,12 @@ This is the Model's file in our MVC framework.
 It contains data structure and data managing.
 """
 
-
 import json
 import os
-
 from abc import ABC, abstractmethod
 from time import time
 
-
-class Project:
-    """
-    Main class of the project.
-    Project is a static class
-    Contains settings and lists of entities
-    (skeletons and animations).
-    """
-    default_bone_color = (0, 0, 0)
-    default_bone_thickness = 1.0
-    default_transition_time = 1.0
-
-    animations_dir = 'animations'
-    skeletons_dir = 'skeletons'
-
-    skeletons = list()
-    animations = list()
-
-    def __init__(self):
-        self.active_element = self
-
-    @staticmethod
-    def has_skeleton(name):
-        return any(name == skeleton.name for skeleton in Project.skeletons)
-
-    @staticmethod
-    def has_animation(name):
-        return any(name == animation.name for animation in Project.animations)
-
-    @property
-    def number_of_skeletons(self):
-        return len(self.skeletons)
-
-    @staticmethod
-    def load():
-        for filename in os.listdir(Project.skeletons_dir):
-            if filename.endswith('.json'):
-                skeleton = Skeleton(name=filename[:-5])
-                skeleton.load()
-
-        for filename in os.listdir(Project.animations_dir):
-            if filename.endswith('.json'):
-                animation = Animation(name=filename[:-5])
-                animation.load()
-
-    def add_skeleton(self, skeleton):
-        self.skeletons.append(skeleton)
-
-    def remove_skeleton(self, skeleton_id: int):
-        self.skeletons.pop(skeleton_id)
+from settings import ProjectSettings
 
 
 class Bone(ABC):
@@ -103,7 +52,7 @@ class SegmentBone(Bone):
     Rotation is the angle between the segment and the horizontal line (OX).
     """
     def __init__(self, length: float, rotation: float, position: tuple,
-                 color=Project.default_bone_color, thickness=Project.default_bone_thickness):
+                 color=ProjectSettings.default_bone_color, thickness=ProjectSettings.default_bone_thickness):
         self.__length = length
         self.__rotation = rotation
         super().__init__(position, color, thickness)
@@ -120,6 +69,7 @@ class SegmentBone(Bone):
         res = super().to_dict()
         res['length'] = self.__length
         res['rotation'] = self.__rotation
+        res['type'] = 'SEGMENT'
         return res
 
 
@@ -130,7 +80,7 @@ class CircleBone(Bone):
     Radius is the radius of the circle.
     """
     def __init__(self, radius: float, position: tuple,
-                 color=Project.default_bone_color, thickness=Project.default_bone_thickness):
+                 color=ProjectSettings.default_bone_color, thickness=ProjectSettings.default_bone_thickness):
         self.__radius = radius
         super().__init__(position, color, thickness)
 
@@ -143,6 +93,7 @@ class CircleBone(Bone):
     def to_dict(self):
         res = super().to_dict()
         res['radius'] = self.__radius
+        res['type'] = 'CIRCLE'
         return res
 
 
@@ -161,12 +112,7 @@ class Skeleton:
     """
     def __init__(self, name=None):
         self.__name = name if name else f'skeleton_{str(int(time()))}'
-        try:
-            self.load()
-        except FileNotFoundError:
-            self.__bones = list()
-        if not Project.has_skeleton(self.__name):
-            Project.skeletons.append(self)
+        self.__bones = list()
 
     @property
     def number_of_bones(self):
@@ -194,17 +140,34 @@ class Skeleton:
             bones=[bone.to_dict() for bone in self.__bones],
         )
 
-    def save(self):
+    def save(self, path_to_project_dir):
         if not self.__bones:
             raise ValueError('Skeleton has no bones to save.')
-        with open(f'{Project.skeletons_dir}/{self.__name}.json', 'w') as file:
-            json.dump(self.to_dict(), file)
+        with open(os.path.join(path_to_project_dir, ProjectSettings.skeletons_dir, self.name), 'w') as file:
+            json.dump(self.to_dict(), file, indent=2)
 
-    def load(self):
+    def load(self, path_to_project_dir):
         try:
-            with open(f'{Project.skeletons_dir}/{self.__name}.json', 'r') as file:
+            with open(os.path.join(path_to_project_dir, ProjectSettings.skeletons_dir, self.name), 'r') as file:
                 data = json.load(file)
-                self.__bones = data['bones']
+                self.__name = data['name']
+                for bone in data['bones']:
+                    if bone['type'] == 'SEGMENT':
+                        self.__bones.append(SegmentBone(
+                            bone['length'],
+                            bone['rotation'],
+                            bone['position'],
+                            bone['color'],
+                            bone['thickness'],
+                        ))
+                    elif bone['type'] == 'CIRCLE':
+                        self.__bones.append(SegmentBone(
+                            bone['radius'],
+                            bone['position'],
+                            bone['color'],
+                            bone['thickness'],
+                        ))
+
         except FileNotFoundError:
             raise FileNotFoundError(f'File for skeleton "{self.__name}" was not found.')
 
@@ -215,17 +178,26 @@ class SkeletonState:
     Updates is a list of update for each bone of the skeleton.
     Update for the bone is a dictionary with parameters to change as keys and parameter's new values as values.
     """
-    def __init__(self, skeleton: Skeleton, updates=None):
-        self.__updates = updates
+    def __init__(self, skeleton=None, updates=None):
+        self.__updates = updates if updates else list()
         self.__skeleton = skeleton
 
     @property
     def skeleton_name(self):
-        return self.__skeleton.name
+        return self.__skeleton.name if self.__skeleton else None
+
+    def set_skeleton(self, skeleton: Skeleton):
+        self.__skeleton = skeleton
 
     def apply(self):
         for i in range(len(self.__updates)):
             self.__skeleton.update_bone(i, **self.__updates[i])
+
+    def to_dict(self):
+        return dict(
+            skeleton_name=self.skeleton_name,
+            bone_updates=self.__updates,
+        )
 
 
 class Animation:
@@ -238,15 +210,10 @@ class Animation:
     Can be saved to the hard drive and loaded from there.
     Can be exported to GIF.
     """
-    def __init__(self, skeleton: Skeleton, name=None):
+    def __init__(self, skeleton=None, name=None):
         self.__name = name if name else f'animation_{str(int(time()))}'
         self.__skeleton = skeleton
-        try:
-            self.load()
-        except FileNotFoundError:
-            self.__states, self.__transitions = list(), list()
-        if not Project.has_animation(self.__name):
-            Project.animations.append(self)
+        self.__states, self.__transitions = list(), list()
 
     @property
     def name(self):
@@ -254,13 +221,20 @@ class Animation:
 
     @property
     def skeleton_name(self):
-        return self.__skeleton.name
+        return self.__skeleton.name if self.__skeleton else None
+
+    def set_skeleton(self, skeleton: Skeleton):
+        self.__skeleton = skeleton
+        for state in self.__states:
+            state.set_skeleton(skeleton)
 
     def check_state(self, state: SkeletonState):
-        if state.skeleton_name != self.skeleton_name:
+        if not self.__skeleton:
+            raise ValueError(f'There is no skeleton matched for this animation.')
+        elif state.skeleton_name != self.skeleton_name:
             raise ValueError(f'Can not add a state for a different skeleton to the animation')
 
-    def add_state(self, state: SkeletonState, transition_time=Project.default_transition_time):
+    def add_state(self, state: SkeletonState, transition_time=ProjectSettings.default_transition_time):
         self.check_state(state)
         if not self.__states:
             self.__states.append(state)
@@ -286,7 +260,7 @@ class Animation:
         else:
             raise IndexError(f'Animation does not have a state with index {state_id}.')
 
-    def change_transition_time(self, state_id: int, transition_time=Project.default_transition_time):
+    def change_transition_time(self, state_id: int, transition_time=ProjectSettings.default_transition_time):
         if state_id < len(self.__states) and state_id != 0:
             self.__transitions.pop(state_id - 1)
             self.__transitions.insert(state_id - 1, transition_time)
@@ -297,24 +271,114 @@ class Animation:
         return dict(
             name=self.__name,
             skeleton_name=self.skeleton_name,
-            states=self.__states,
+            states=[state.to_dict() for state in self.__states],
             transitions=self.__transitions,
         )
 
-    def save(self):
+    def save(self, path_to_project_dir):
         if not self.__states:
             raise ValueError('Animation has nothing to save.')
-        with open(f'{Project.animations_dir}/{self.__name}.json', 'w') as file:
-            json.dump(self.to_dict(), file)
+        with open(os.path.join(path_to_project_dir, ProjectSettings.animations_dir, self.name), 'w') as file:
+            json.dump(self.to_dict(), file, indent=2)
 
-    def load(self):
+    def load(self, path_to_project_dir):
         try:
-            with open(f'{Project.animations_dir}/{self.__name}.json', 'r') as file:
+            with open(os.path.join(path_to_project_dir, ProjectSettings.animations_dir, self.name), 'r') as file:
                 data = json.load(file)
-                self.__states = data['states']
+                self.__states = [SkeletonState(updates=state['bone_updates']) for state in data['states']]
                 self.__transitions = data['transitions']
+                return data['skeleton_name']
         except FileNotFoundError:
             raise FileNotFoundError(f'File for animation "{self.__name}" was not found.')
 
     def export_to_gif(self):
         pass
+
+
+class Project:
+    """
+    Main class of the project.
+    Contains lists of entities (skeletons and animations).
+    """
+
+    def __init__(self):
+        self.active_element = self
+
+        self.__skeletons = list()
+        self.__animations = list()
+
+    def has_skeleton(self, name: str):
+        return any(name == skeleton.name for skeleton in self.__skeletons)
+
+    def has_animation(self, name: str):
+        return any(name == animation.name for animation in self.__animations)
+
+    def get_skeleton(self, name: str):
+        return list(filter(lambda s: s.name == name, self.__skeletons))[0] if self.has_skeleton(name) else None
+
+    def get_animation(self, name: str):
+        return list(filter(lambda a: a.name == name, self.__animations))[0] if self.has_animation(name) else None
+
+    @property
+    def number_of_skeletons(self):
+        return len(self.__skeletons)
+
+    @property
+    def number_of_animations(self):
+        return len(self.__animations)
+
+    def add_skeleton(self, skeleton: Skeleton):
+        if not self.has_skeleton(skeleton.name):
+            self.__skeletons.append(skeleton)
+        else:
+            raise NameError(f'Skeleton with name {skeleton.name} already exists in the project.')
+
+    def remove_skeleton(self, skeleton_id: int):
+        if skeleton_id < self.number_of_skeletons:
+            self.__skeletons.pop(skeleton_id)
+        else:
+            raise IndexError(f'Project does not have a skeleton with index {skeleton_id}. '
+                             f'It has only {self.number_of_skeletons} skeletons.')
+
+    def add_animation(self, animation: Animation):
+        if not self.has_animation(animation.name):
+            self.__animations.append(animation)
+        else:
+            raise NameError(f'Animation with name {animation.name} already exists in the project.')
+
+    def remove_animation(self, animation_id: int):
+        if animation_id < self.number_of_animations:
+            self.__animations.pop(animation_id)
+        else:
+            raise IndexError(f'Project does not have an animation with index {animation_id}. '
+                             f'It has only {self.number_of_animations} animations.')
+
+    def load(self, path_to_project_dir):
+        for filename in os.listdir(os.path.join(path_to_project_dir, ProjectSettings.skeletons_dir)):
+            skeleton = Skeleton(name=filename)
+            skeleton.load(path_to_project_dir)
+            self.add_skeleton(skeleton)
+
+        for filename in os.listdir(os.path.join(path_to_project_dir, ProjectSettings.animations_dir)):
+            animation = Animation(name=filename)
+            skeleton_name = animation.load(path_to_project_dir)
+            animation.set_skeleton(self.get_skeleton(skeleton_name))
+            self.add_animation(animation)
+
+    def save(self, path_to_project_dir):
+        directories_to_create = [
+            path_to_project_dir,
+            os.path.join(path_to_project_dir, ProjectSettings.skeletons_dir),
+            os.path.join(path_to_project_dir, ProjectSettings.animations_dir),
+        ]
+        for directory in directories_to_create:
+            try:
+                os.mkdir(directory)
+            except FileExistsError:
+                continue
+
+        for skeleton in self.__skeletons:
+            skeleton.save(path_to_project_dir)
+
+        for animation in self.__animations:
+            animation.save(path_to_project_dir)

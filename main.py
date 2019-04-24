@@ -5,38 +5,41 @@ Animation creator is a simple tools for create the
 2D skeleton animation and export it to GIF or atlas.
 """
 
+import os
 import tkinter
 import tkinter.ttk
 
+from tkinter.filedialog import askdirectory
+
+from model import Project
 import command
-import model
 
-#class Project:
-#    """Model in our MVC framework"""
 
-#class View:
+# class View:
 #    pass
 
-#class Controller:
+# class Controller:
 #    pass
 
 
 class MainWindow(tkinter.Tk):
     """This is main window of the aplication. It contains static UI."""
-    def __init__(self):
+    def __init__(self, project, command_list):
         tkinter.Tk.__init__(self)
         self.title("Animation creator")
         self._init_menu()
         self._init_work_area()
         self.geometry("950x550+300+300")
+        self.__project = project
+        self.__command_list = command_list
 
     def _init_menu(self):
         self.main_menu = tkinter.Menu(self)
         self.config(menu=self.main_menu)
 
         file_menu = tkinter.Menu(self.main_menu)
-        file_menu.add_command(label="Open Project")
-        file_menu.add_command(label="Save Project")
+        file_menu.add_command(label="Open Project", command=self.load_project)
+        file_menu.add_command(label="Save Project", command=self.save_project)
         file_menu.add_command(label="Exit", command=self.quit)
         self.main_menu.add_cascade(label="File", menu=file_menu)
 
@@ -72,10 +75,21 @@ class MainWindow(tkinter.Tk):
         self.project_view = tkinter.ttk.Treeview()
         self.project_view.grid(row=0, column=2, sticky=tkinter.N+tkinter.E+tkinter.S+tkinter.W)
 
+    def load_project(self):
+        path_to_project_dir = askdirectory()
+        if path_to_project_dir:
+            self.__project.load(path_to_project_dir)
+        self.__command_list.reset()
+
+    def save_project(self):
+        path_to_project_dir = askdirectory()
+        if path_to_project_dir:
+            self.__project.save(path_to_project_dir)
+
 
 if __name__ == "__main__":
-    project = model.Project()
+    project = Project()
     commands = command.CommandList(project)
 
-    APP = MainWindow()
+    APP = MainWindow(project, commands)
     APP.mainloop()

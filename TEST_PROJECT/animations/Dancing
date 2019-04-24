@@ -1,0 +1,25 @@
+{
+  "name": "Dancing",
+  "skeleton_name": "Vasiliy",
+  "states": [
+    {
+      "skeleton_name": "Vasiliy",
+      "bone_updates": [
+        {
+          "rotation": 1
+        }
+      ]
+    },
+    {
+      "skeleton_name": "Vasiliy",
+      "bone_updates": [
+        {
+          "rotation": 0
+        }
+      ]
+    }
+  ],
+  "transitions": [
+    1.0
+  ]
+}
