@@ -12,6 +12,7 @@ import tkinter.ttk
 from tkinter.filedialog import askdirectory
 
 from model import Project
+import canvas
 import command
 import tree
 
@@ -67,8 +68,9 @@ class MainWindow(tkinter.Tk):
         self.columnconfigure(1, weight=1)
         self.columnconfigure(2, weight=1)
 
-        self.canvas = tkinter.Canvas(background="white")
+        self.canvas = canvas.ResourceViewer(self.__command_list)
         self.canvas.grid(row=0, column=0, sticky=tkinter.N+tkinter.E+tkinter.S+tkinter.W)
+        self.__project.register_view(self.canvas)
 
         self.options = tkinter.Frame(background="blue")
         self.options.grid(row=0, column=1, sticky=tkinter.N+tkinter.E+tkinter.S+tkinter.W)

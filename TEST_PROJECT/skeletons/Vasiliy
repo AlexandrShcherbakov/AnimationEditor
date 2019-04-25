@@ -3,16 +3,16 @@
   "bones": [
     {
       "position": [
-        0,
-        0
+        100,
+        10
       ],
       "color": [
         0,
         0,
         0
       ],
-      "thickness": 1.0,
-      "length": 10,
+      "thickness": 5.0,
+      "length": 100,
       "rotation": 2,
       "type": "SEGMENT"
     }
