@@ -20,11 +20,17 @@ class ProjectHierarchyView(tkinter.ttk.Treeview):
         for i in range(model.number_of_animations):
             animation = self.insert(animations, "end", iid=model.get_animation(i).name,
                 text=model.get_animation(i).name, open=True)
+            if model.get_animation(i) == model.active_element:
+                self.focus(animation)
+                self.selection_set(animation)
             self.__items[animation] = model.get_animation(i)
 
         for i in range(model.number_of_skeletons):
             skeleton = self.insert(skeletons, "end", iid=model.get_skeleton(i).name,
                 text=model.get_skeleton(i).name, open=True)
+            if model.get_skeleton(i) == model.active_element:
+                self.focus(skeleton)
+                self.selection_set(skeleton)
             self.__items[skeleton] = model.get_skeleton(i)
 
     def select_item(self, event):

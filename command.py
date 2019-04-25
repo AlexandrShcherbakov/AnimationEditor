@@ -21,6 +21,7 @@ class CommandList:
             return
         self.commands[self.last_id].revert()
         self.last_id -= 1
+        self.model.update_views()
 
     def redo(self):
         """Redo next command"""
