@@ -5,6 +5,7 @@ It contains data structure and data managing.
 
 import json
 import os
+import shutil
 from abc import ABC, abstractmethod
 from time import time
 
@@ -399,7 +400,8 @@ class Project:
             try:
                 os.mkdir(directory)
             except FileExistsError:
-                continue
+                shutil.rmtree(directory)
+                os.mkdir(directory)
 
         for skeleton in self.__skeletons:
             skeleton.save(path_to_project_dir)
