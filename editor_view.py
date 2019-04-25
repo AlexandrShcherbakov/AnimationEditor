@@ -1,7 +1,7 @@
 import tkinter
 
 import command
-from model import Skeleton, SegmentBone, Bone
+from model import Skeleton, SegmentBone, CircleBone
 
 
 class ResourceEditorViewer(tkinter.Frame):
@@ -37,19 +37,40 @@ class ResourceEditorViewer(tkinter.Frame):
             name.grid(row=0, column=1)
             last_row = 1
 
-            def save_command:
+            def save_command():
                 self.__command_list.add_command(command.PatchCommand({"name": name.get()}))
 
-        if isinstance(model.active_element, Bone):
+        if isinstance(model.active_element, CircleBone):
             lb = tkinter.Label(self, text="Name:")
             lb.grid(row=0, column=0)
             name = tkinter.Entry(self, bg="white")
             name.insert("end", model.active_element.name)
             name.grid(row=0, column=1)
-            last_row = 1
 
-            def save_command:
-                self.__command_list.add_command(command.PatchCommand({"name": name.get()}))
+            lb = tkinter.Label(self, text="Position:")
+            lb.grid(row=1, column=0)
+            pos_x = tkinter.Entry(self, bg="white")
+            pos_x.insert("end", model.active_element.to_dict()["position"][0])
+            pos_x.grid(row=1, column=1)
+            pos_y = tkinter.Entry(self, bg="white")
+            pos_y.insert("end", model.active_element.to_dict()["position"][1])
+            pos_y.grid(row=1, column=2)
+
+
+            lb = tkinter.Label(self, text="Thickness:")
+            lb.grid(row=2, column=0)
+            thickness = tkinter.Entry(self, bg="white")
+            thickness.insert("end", model.active_element.to_dict()["thickness"])
+            thickness.grid(row=2, column=1)
+
+            last_row = 3
+
+            def save_command():
+                self.__command_list.add_command(command.PatchCommand({
+                    "name": name.get(), 
+                    "position": (int(pos_x.get()), int(pos_y.get())),
+                    "thickness": float(thickness.get()),
+                }))
 
         save = tkinter.Button(self, text="Save", command=save_command)
         save.grid(row=last_row, column=0)

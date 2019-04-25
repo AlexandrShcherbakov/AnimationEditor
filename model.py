@@ -36,6 +36,12 @@ class Bone(ABC):
         if "name" in opts:
             old_values["name"] = self.__name
             self.__name = opts["name"]
+        if "position" in opts:
+            old_values["position"] = self.__position
+            self.__position = opts["position"]
+        if "thickness" in opts:
+            old_values["thickness"] = self.__thickness
+            self.__thickness = opts["thickness"]
         return old_values
 
     @abstractmethod
