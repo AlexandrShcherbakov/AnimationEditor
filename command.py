@@ -100,7 +100,10 @@ class SelectCommand:
         """Apply command to model"""
         self.previous = model.active_element
         self.model = model
-        model.active_element = self.elem
+        if isinstance(self.elem, list):
+            model.active_element = model
+        else:
+            model.active_element = self.elem
 
     def revert(self):
         """Revert command"""

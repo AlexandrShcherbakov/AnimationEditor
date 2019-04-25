@@ -11,7 +11,7 @@ import tkinter.ttk
 
 from tkinter.filedialog import askdirectory
 
-from model import Project, CircleBone, SegmentBone, Skeleton
+from model import Project, CircleBone, SegmentBone, Skeleton, Animation
 import canvas
 import command
 import editor_view
@@ -106,6 +106,11 @@ class MainWindow(tkinter.Tk):
         if isinstance(model.active_element, Skeleton):
             self.add_menu.entryconfig("Line bone", state="normal")
             self.add_menu.entryconfig("Circle bone", state="normal")
+        if isinstance(model.active_element, Project):
+            self.add_menu.entryconfig("Animation", state="normal")
+            self.add_menu.entryconfig("Skeleton", state="normal")
+        if isinstance(model.active_element, Animation):
+            self.add_menu.entryconfig("State", state="normal")
 
 
 if __name__ == "__main__":
