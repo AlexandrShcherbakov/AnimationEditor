@@ -13,6 +13,7 @@ from tkinter.filedialog import askdirectory
 
 from model import Project
 import command
+import tree
 
 
 # class View:
@@ -27,11 +28,11 @@ class MainWindow(tkinter.Tk):
     def __init__(self, project, command_list):
         tkinter.Tk.__init__(self)
         self.title("Animation creator")
+        self.__command_list = command_list
+        self.__project = project
         self._init_menu()
         self._init_work_area()
         self.geometry("950x550+300+300")
-        self.__project = project
-        self.__command_list = command_list
 
     def _init_menu(self):
         self.main_menu = tkinter.Menu(self)
@@ -44,8 +45,8 @@ class MainWindow(tkinter.Tk):
         self.main_menu.add_cascade(label="File", menu=file_menu)
 
         edit_menu = tkinter.Menu(self.main_menu)
-        edit_menu.add_command(label="Redo", command=commands.redo)
-        edit_menu.add_command(label="Undo", command=commands.undo)
+        edit_menu.add_command(label="Redo", command=self.__command_list.redo)
+        edit_menu.add_command(label="Undo", command=self.__command_list.undo)
 
         add_menu = tkinter.Menu(edit_menu)
         add_menu.add_command(label="Animation")
@@ -72,8 +73,9 @@ class MainWindow(tkinter.Tk):
         self.options = tkinter.Frame(background="blue")
         self.options.grid(row=0, column=1, sticky=tkinter.N+tkinter.E+tkinter.S+tkinter.W)
 
-        self.project_view = tkinter.ttk.Treeview()
+        self.project_view = tree.ProjectHierarchyView(self.__command_list)
         self.project_view.grid(row=0, column=2, sticky=tkinter.N+tkinter.E+tkinter.S+tkinter.W)
+        self.__project.register_view(self.project_view)
 
     def load_project(self):
         path_to_project_dir = askdirectory()

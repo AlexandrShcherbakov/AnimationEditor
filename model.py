@@ -134,6 +134,9 @@ class Skeleton:
         else:
             raise IndexError(f'Skeleton does not have a bone with index {bone_id}. It has only {self.number_of_bones} bones.')
 
+    def get_bone(self, idx):
+        return self.__bones[idx]
+
     def to_dict(self):
         return dict(
             name=self.__name,
@@ -306,6 +309,7 @@ class Project:
 
         self.__skeletons = list()
         self.__animations = list()
+        self.__views = list()
 
     def has_skeleton(self, name: str):
         return any(name == skeleton.name for skeleton in self.__skeletons)
@@ -314,9 +318,13 @@ class Project:
         return any(name == animation.name for animation in self.__animations)
 
     def get_skeleton(self, name: str):
+        if isinstance(name, int):
+            return self.__skeletons[name]
         return list(filter(lambda s: s.name == name, self.__skeletons))[0] if self.has_skeleton(name) else None
 
     def get_animation(self, name: str):
+        if isinstance(name, int):
+            return self.__animations[name]
         return list(filter(lambda a: a.name == name, self.__animations))[0] if self.has_animation(name) else None
 
     @property
@@ -365,6 +373,8 @@ class Project:
             animation.set_skeleton(self.get_skeleton(skeleton_name))
             self.add_animation(animation)
 
+        self.update_views()
+
     def save(self, path_to_project_dir):
         directories_to_create = [
             path_to_project_dir,
@@ -382,3 +392,10 @@ class Project:
 
         for animation in self.__animations:
             animation.save(path_to_project_dir)
+
+    def update_views(self):
+        for view in self.__views:
+            view.on_model_changed(self)
+
+    def register_view(self, view):
+        self.__views.append(view)

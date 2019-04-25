@@ -28,6 +28,7 @@ class CommandList:
             return
         self.last_id += 1
         self.commands[self.last_id].apply(self.model)
+        self.model.update_views()
 
     def reset(self):
         self.commands = list()
