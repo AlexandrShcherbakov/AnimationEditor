@@ -11,7 +11,7 @@ import tkinter.ttk
 
 from tkinter.filedialog import askdirectory
 
-from model import Project, CircleBone
+from model import Project, CircleBone, SegmentBone
 import canvas
 import command
 import editor_view
@@ -54,7 +54,9 @@ class MainWindow(tkinter.Tk):
         add_menu.add_command(label="Animation")
         add_menu.add_command(label="State")
         add_menu.add_command(label="Skeleton")
-        add_menu.add_command(label="Line bone")
+        add_menu.add_command(label="Line bone", command=lambda: self.__command_list.add_command(
+            command.AddBoneCommand(SegmentBone(50, 0, (100, 100)))
+        ))
         add_menu.add_command(label="Circle bone", command=lambda: self.__command_list.add_command(
             command.AddBoneCommand(CircleBone(50, (100, 100)))
         ))
