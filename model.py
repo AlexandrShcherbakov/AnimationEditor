@@ -164,7 +164,7 @@ class Skeleton:
                             bone['thickness'],
                         ))
                     elif bone['type'] == 'CIRCLE':
-                        self.__bones.append(SegmentBone(
+                        self.__bones.append(CircleBone(
                             bone['radius'],
                             bone['position'],
                             bone['color'],

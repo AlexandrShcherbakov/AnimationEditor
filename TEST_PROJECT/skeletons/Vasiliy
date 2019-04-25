@@ -15,6 +15,20 @@
       "length": 100,
       "rotation": 2,
       "type": "SEGMENT"
+    },
+    {
+      "position": [
+        100,
+        100
+      ],
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "thickness": 1.0,
+      "radius": 50,
+      "type": "CIRCLE"
     }
   ]
 }

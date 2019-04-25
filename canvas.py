@@ -1,7 +1,7 @@
 import math
 import tkinter
 
-from model import Skeleton, SegmentBone
+from model import Skeleton, SegmentBone, CircleBone
 
 class ResourceViewer(tkinter.Canvas):
     def __init__(self, command_list):
@@ -15,6 +15,16 @@ class ResourceViewer(tkinter.Canvas):
             end_y = params["position"][1] + params["length"] * math.sin(params["rotation"])
             self.create_line((params["position"][0], params["position"][0], end_x, end_y),
                 fill="#{:02x}{:02x}{:02x}".format(*params["color"]),
+                width=params["thickness"]
+            )
+        if isinstance(bone, CircleBone):
+            params = bone.to_dict()
+            left = params["position"][0] - params["radius"]
+            right = params["position"][0] + params["radius"]
+            top = params["position"][1] - params["radius"]
+            bottom = params["position"][1] + params["radius"]
+            self.create_oval((left, top, right, bottom),
+                outline="#{:02x}{:02x}{:02x}".format(*params["color"]),
                 width=params["thickness"]
             )
 
