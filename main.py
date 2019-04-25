@@ -18,13 +18,6 @@ import editor_view
 import tree
 
 
-# class View:
-#    pass
-
-# class Controller:
-#    pass
-
-
 class MainWindow(tkinter.Tk):
     """This is main window of the aplication. It contains static UI."""
     def __init__(self, project, command_list):

@@ -152,7 +152,10 @@ class Skeleton:
         if bone_id < self.number_of_bones:
             self.__bones[bone_id].update(**kwargs)
         else:
-            raise IndexError(f'Skeleton does not have a bone with index {bone_id}. It has only {self.number_of_bones} bones.')
+            raise IndexError(
+                f'Skeleton does not have a bone with index {bone_id}. '
+                'It has only {self.number_of_bones} bones.'
+            )
 
     def get_bone(self, idx):
         return self.__bones[idx]

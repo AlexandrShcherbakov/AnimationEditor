@@ -13,7 +13,7 @@ class ProjectHierarchyView(tkinter.ttk.Treeview):
     def on_model_changed(self, model):
         self.delete(*self.get_children())
         self.__items.clear()
-        
+
         animations = self.insert("", "end", text="Animations", open=True)
         skeletons = self.insert("", "end", text="Skeletons", open=True)
 
@@ -72,4 +72,3 @@ class ProjectHierarchyView(tkinter.ttk.Treeview):
         iid = self.identify("item", event.x, event.y)
         if iid in self.__items:
             self.__command_list.add_command(command.SelectCommand(self.__items[iid]))
-

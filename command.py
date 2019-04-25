@@ -3,6 +3,7 @@ This is a module with command pattern, which supports
 animation editing in the project.
 """
 
+
 class CommandList:
     """This class manages commands queue"""
     def __init__(self, model):
