@@ -50,7 +50,7 @@ class PatchCommand:
 
     def revert(self):
         """Revert command"""
-        model.active_element.process_patch(self.old_value)
+        self.target.process_patch(self.old_value)
 
 
 class AddBoneCommand:
