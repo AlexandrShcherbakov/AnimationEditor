@@ -1,7 +1,8 @@
 import math
 import tkinter
 
-from model import Skeleton, SegmentBone, CircleBone
+from model import Skeleton, SegmentBone, CircleBone, Bone
+
 
 class ResourceViewer(tkinter.Canvas):
     def __init__(self, command_list):
@@ -36,4 +37,5 @@ class ResourceViewer(tkinter.Canvas):
         self.delete("all")
         if isinstance(model.active_element, Skeleton):
             self.__draw_skeleton(model.active_element)
-            
+        if isinstance(model.active_element, Bone):
+            self.__draw_bone(model.active_element)
