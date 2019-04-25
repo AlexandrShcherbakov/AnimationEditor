@@ -12,6 +12,7 @@
         0
       ],
       "thickness": 5.0,
+      "name": "LEG",
       "length": 100,
       "rotation": 2,
       "type": "SEGMENT"
@@ -27,6 +28,7 @@
         0
       ],
       "thickness": 1.0,
+      "name": "HEAD",
       "radius": 50,
       "type": "CIRCLE"
     }

@@ -21,10 +21,22 @@ class Bone(ABC):
     What is position of the bone depends on the type of the bone.
     Bone can change color and thickness.
     """
-    def __init__(self, position: tuple, color: tuple, thickness: float):
+    def __init__(self, position: tuple, color: tuple, thickness: float, name=None):
         self.__position = position
         self.__color = color
         self.__thickness = thickness
+        self.__name = name
+
+    @property
+    def name(self):
+        return self.__name
+
+    def process_patch(self, opts):
+        old_values = dict()
+        if "name" in opts:
+            old_values["name"] = self.__name
+            self.__name = opts["name"]
+        return old_values
 
     @abstractmethod
     def update(self, **kwargs):
@@ -35,14 +47,19 @@ class Bone(ABC):
                 self.__color = kwargs[attr]
             elif attr == 'thickness':
                 self.__thickness = kwargs[attr]
+            elif attr == 'name':
+                self.__name = kwargs[attr]
 
     @abstractmethod
     def to_dict(self):
-        return dict(
+        res = dict(
             position=self.__position,
             color=self.__color,
             thickness=self.__thickness,
         )
+        if self.__name:
+            res['name'] = self.__name
+        return res
 
 
 class SegmentBone(Bone):
@@ -53,10 +70,10 @@ class SegmentBone(Bone):
     Rotation is the angle between the segment and the horizontal line (OX).
     """
     def __init__(self, length: float, rotation: float, position: tuple,
-                 color=ProjectSettings.default_bone_color, thickness=ProjectSettings.default_bone_thickness):
+                 color=ProjectSettings.default_bone_color, thickness=ProjectSettings.default_bone_thickness, name=None):
         self.__length = length
         self.__rotation = rotation
-        super().__init__(position, color, thickness)
+        super().__init__(position, color, thickness, name)
 
     def update(self, **kwargs):
         for attr in kwargs:
@@ -81,9 +98,9 @@ class CircleBone(Bone):
     Radius is the radius of the circle.
     """
     def __init__(self, radius: float, position: tuple,
-                 color=ProjectSettings.default_bone_color, thickness=ProjectSettings.default_bone_thickness):
+                 color=ProjectSettings.default_bone_color, thickness=ProjectSettings.default_bone_thickness, name=None):
         self.__radius = radius
-        super().__init__(position, color, thickness)
+        super().__init__(position, color, thickness, name)
 
     def update(self, **kwargs):
         for attr in kwargs:
@@ -124,6 +141,8 @@ class Skeleton:
         return self.__name
 
     def add_bone(self, bone: Bone):
+        if not bone.name:
+            bone.update(name=f'{self.name}_bone_{self.number_of_bones}')
         self.__bones.append(bone)
 
     def remove_bone(self, bone_id: int):
@@ -163,6 +182,7 @@ class Skeleton:
                             bone['position'],
                             bone['color'],
                             bone['thickness'],
+                            name=bone['name'] if 'name' in bone else f'{self.name}_bone_{self.number_of_bones}',
                         ))
                     elif bone['type'] == 'CIRCLE':
                         self.__bones.append(CircleBone(
@@ -170,6 +190,7 @@ class Skeleton:
                             bone['position'],
                             bone['color'],
                             bone['thickness'],
+                            name=bone['name'] if 'name' in bone else f'{self.name}_bone_{self.number_of_bones}',
                         ))
 
         except FileNotFoundError:

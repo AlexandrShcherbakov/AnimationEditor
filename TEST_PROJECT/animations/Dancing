@@ -1,9 +1,9 @@
 {
   "name": "Dancing",
-  "skeleton_name": "Vasiliy11",
+  "skeleton_name": null,
   "states": [
     {
-      "skeleton_name": "Vasiliy11",
+      "skeleton_name": null,
       "bone_updates": [
         {
           "rotation": 1
@@ -11,7 +11,7 @@
       ]
     },
     {
-      "skeleton_name": "Vasiliy11",
+      "skeleton_name": null,
       "bone_updates": [
         {
           "rotation": 0

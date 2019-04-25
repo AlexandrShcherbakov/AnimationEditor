@@ -33,8 +33,8 @@ class ProjectHierarchyView(tkinter.ttk.Treeview):
             for j in range(model.get_animation(i).number_of_states):
                 state = self.insert(
                     animation, "end",
-                    iid=model.get_animation(i).name + f"_state_{j}",
-                    text=model.get_animation(i).name + f"_state_{j}",
+                    iid=f"{model.get_animation(i).name}_state_{j}",
+                    text=f"{model.get_animation(i).name}_state_{j}",
                     open=True,
                 )
                 if model.get_animation(i).get_state(j) == model.active_element:
@@ -56,10 +56,11 @@ class ProjectHierarchyView(tkinter.ttk.Treeview):
             self.__items[skeleton] = model.get_skeleton(i)
 
             for j in range(model.get_skeleton(i).number_of_bones):
+                # print(model.get_skeleton(i).get_bone(j).name)
                 bone = self.insert(
                     skeleton, "end",
-                    iid=model.get_skeleton(i).name + f"_bone_{j}",
-                    text=model.get_skeleton(i).name + f"_bone_{j}",
+                    iid=f'{model.get_skeleton(i).name}_bone_{j}',
+                    text=model.get_skeleton(i).get_bone(j).name,
                     open=True,
                 )
                 if model.get_skeleton(i).get_bone(j) == model.active_element:

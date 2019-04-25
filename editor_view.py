@@ -1,7 +1,7 @@
 import tkinter
 
 import command
-from model import Skeleton, SegmentBone
+from model import Skeleton, SegmentBone, Bone
 
 class ResourceEditorViewer(tkinter.Frame):
     def __init__(self, command_list):
@@ -28,6 +28,15 @@ class ResourceEditorViewer(tkinter.Frame):
         last_row = 0
         save_command = None
         if isinstance(model.active_element, Skeleton):
+            lb = tkinter.Label(self, text="Name:")
+            lb.grid(row=0, column=0)
+            name = tkinter.Entry(self, bg="white")
+            name.insert("end", model.active_element.name)
+            name.grid(row=0, column=1)
+            last_row = 1
+            save_command = lambda: self.__command_list.add_command(command.PatchCommand({"name": name.get()}))
+
+        if isinstance(model.active_element, Bone):
             lb = tkinter.Label(self, text="Name:")
             lb.grid(row=0, column=0)
             name = tkinter.Entry(self, bg="white")
