@@ -244,6 +244,7 @@ class Animation:
             state.set_skeleton(skeleton)
 
     def check_state(self, state: SkeletonState):
+        return
         if not self.__skeleton:
             raise ValueError(f'There is no skeleton matched for this animation.')
         elif state.skeleton_name != self.skeleton_name:

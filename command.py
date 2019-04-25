@@ -89,6 +89,42 @@ class AddSkeletonCommand:
         self.target.remove_skeleton(self.added_id)
 
 
+class AddStateCommand:
+    """This command add a skeleton to the project"""
+    def __init__(self, state):
+        self.state = state
+        self.target = None
+        self.added_id = None
+
+    def apply(self, model):
+        """Apply command to model"""
+        self.target = model.active_element
+        self.added_id = model.active_element.number_of_states
+        model.active_element.add_state(self.state)
+
+    def revert(self):
+        """Revert command"""
+        self.target.remove_state(self.added_id)
+
+
+class AddAnimationCommand:
+    """This command add a skeleton to the project"""
+    def __init__(self, animation):
+        self.animation = animation
+        self.target = None
+        self.added_id = None
+
+    def apply(self, model):
+        """Apply command to model"""
+        self.target = model.active_element
+        self.added_id = model.active_element.number_of_animations
+        model.active_element.add_animation(self.animation)
+
+    def revert(self):
+        """Revert command"""
+        self.target.remove_animation(self.added_id)
+
+
 class SelectCommand:
     """This command select another element"""
     def __init__(self, elem):

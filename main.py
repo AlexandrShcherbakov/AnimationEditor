@@ -11,7 +11,7 @@ import tkinter.ttk
 
 from tkinter.filedialog import askdirectory
 
-from model import Project, CircleBone, SegmentBone, Skeleton, Animation
+from model import Project, CircleBone, SegmentBone, Skeleton, Animation, SkeletonState
 import canvas
 import command
 import editor_view
@@ -51,9 +51,15 @@ class MainWindow(tkinter.Tk):
         edit_menu.add_command(label="Undo", command=self.__command_list.undo)
 
         self.add_menu = tkinter.Menu(edit_menu)
-        self.add_menu.add_command(label="Animation")
-        self.add_menu.add_command(label="State")
-        self.add_menu.add_command(label="Skeleton")
+        self.add_menu.add_command(label="Animation", command=lambda: self.__command_list.add_command(
+            command.AddAnimationCommand(Animation())
+        ))
+        self.add_menu.add_command(label="State", command=lambda: self.__command_list.add_command(
+            command.AddStateCommand(SkeletonState())
+        ))
+        self.add_menu.add_command(label="Skeleton", command=lambda: self.__command_list.add_command(
+            command.AddSkeletonCommand(Skeleton())
+        ))
         self.add_menu.add_command(label="Line bone", command=lambda: self.__command_list.add_command(
             command.AddBoneCommand(SegmentBone(50, 0, (100, 100)))
         ))
