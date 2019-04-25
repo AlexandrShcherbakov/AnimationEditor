@@ -5,6 +5,7 @@ It contains data structure and data managing.
 
 import json
 import os
+import shutil
 from abc import ABC, abstractmethod
 from time import time
 
@@ -233,6 +234,10 @@ class Animation:
     def skeleton_name(self):
         return self.__skeleton.name if self.__skeleton else None
 
+    @property
+    def number_of_states(self):
+        return len(self.__states)
+
     def set_skeleton(self, skeleton: Skeleton):
         self.__skeleton = skeleton
         for state in self.__states:
@@ -269,6 +274,9 @@ class Animation:
                 self.__transitions.pop(state_id - 1)
         else:
             raise IndexError(f'Animation does not have a state with index {state_id}.')
+
+    def get_state(self, idx):
+        return self.__states[idx]
 
     def change_transition_time(self, state_id: int, transition_time=ProjectSettings.default_transition_time):
         if state_id < len(self.__states) and state_id != 0:
@@ -392,7 +400,8 @@ class Project:
             try:
                 os.mkdir(directory)
             except FileExistsError:
-                continue
+                shutil.rmtree(directory)
+                os.mkdir(directory)
 
         for skeleton in self.__skeletons:
             skeleton.save(path_to_project_dir)
