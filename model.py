@@ -174,6 +174,13 @@ class Skeleton:
         except FileNotFoundError:
             raise FileNotFoundError(f'File for skeleton "{self.__name}" was not found.')
 
+    def process_patch(self, opts):
+        old_values = dict()
+        if "name" in opts:
+            old_values["name"] = self.__name
+            self.__name = opts["name"]
+        return old_values
+
 
 class SkeletonState:
     """

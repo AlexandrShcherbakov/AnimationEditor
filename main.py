@@ -14,6 +14,7 @@ from tkinter.filedialog import askdirectory
 from model import Project
 import canvas
 import command
+import editor_view
 import tree
 
 
@@ -72,8 +73,9 @@ class MainWindow(tkinter.Tk):
         self.canvas.grid(row=0, column=0, sticky=tkinter.N+tkinter.E+tkinter.S+tkinter.W)
         self.__project.register_view(self.canvas)
 
-        self.options = tkinter.Frame(background="blue")
+        self.options = editor_view.ResourceEditorViewer(self.__command_list)
         self.options.grid(row=0, column=1, sticky=tkinter.N+tkinter.E+tkinter.S+tkinter.W)
+        self.__project.register_view(self.options)
 
         self.project_view = tree.ProjectHierarchyView(self.__command_list)
         self.project_view.grid(row=0, column=2, sticky=tkinter.N+tkinter.E+tkinter.S+tkinter.W)

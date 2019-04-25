@@ -38,21 +38,19 @@ class CommandList:
 
 class PatchCommand:
     """Command which change an element."""
-    def __init__(self, option_name, value):
-        self.option_name = option_name
-        self.value = value
+    def __init__(self, opts):
+        self.opts = opts
         self.old_value = None
         self.target = None
 
     def apply(self, model):
         """Apply command to model"""
         self.target = model.active_element
-        self.old_value = getattr(model.active_element, self.option_name)
-        setattr(model.active_element, self.option_name, self.value)
+        self.old_value = model.active_element.process_patch(self.opts)
 
     def revert(self):
         """Revert command"""
-        setattr(self.target, self.option_name, self.value)
+        model.active_element.process_patch(self.old_value)
 
 
 class AddBoneCommand:
