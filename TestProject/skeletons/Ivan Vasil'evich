@@ -1,0 +1,164 @@
+{
+  "name": "Ivan Vasil'evich",
+  "bones": [
+    {
+      "position": [
+        200,
+        100
+      ],
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "thickness": 1.0,
+      "name": "Left arm",
+      "length": 50.0,
+      "rotation": 1.0,
+      "type": "SEGMENT"
+    },
+    {
+      "position": [
+        100,
+        100
+      ],
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "thickness": 1.0,
+      "name": "Right arm",
+      "length": 50.0,
+      "rotation": 2.14,
+      "type": "SEGMENT"
+    },
+    {
+      "position": [
+        100,
+        100
+      ],
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "thickness": 1.0,
+      "name": "Right plecho",
+      "length": 50.0,
+      "rotation": 0.0,
+      "type": "SEGMENT"
+    },
+    {
+      "position": [
+        200,
+        100
+      ],
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "thickness": 1.0,
+      "name": "Left Plecho",
+      "length": 50.0,
+      "rotation": 3.14,
+      "type": "SEGMENT"
+    },
+    {
+      "position": [
+        150,
+        100
+      ],
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "thickness": 1.0,
+      "name": "Spina 1",
+      "length": 100.0,
+      "rotation": 1.57,
+      "type": "SEGMENT"
+    },
+    {
+      "position": [
+        150,
+        150
+      ],
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "thickness": 1.0,
+      "name": "Spina 2",
+      "length": 50.0,
+      "rotation": 1.57,
+      "type": "SEGMENT"
+    },
+    {
+      "position": [
+        150,
+        200
+      ],
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "thickness": 1.0,
+      "name": "Left Leg",
+      "length": 140.0,
+      "rotation": 1.0,
+      "type": "SEGMENT"
+    },
+    {
+      "position": [
+        150,
+        200
+      ],
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "thickness": 1.0,
+      "name": "Right leg",
+      "length": 140.0,
+      "rotation": 2.14,
+      "type": "SEGMENT"
+    },
+    {
+      "position": [
+        150,
+        80
+      ],
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "thickness": 1.0,
+      "name": "Sheya",
+      "length": 20.0,
+      "rotation": 1.57,
+      "type": "SEGMENT"
+    },
+    {
+      "position": [
+        150,
+        50
+      ],
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "thickness": 1.0,
+      "name": "Head",
+      "radius": 30.0,
+      "type": "CIRCLE"
+    }
+  ]
+}

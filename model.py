@@ -156,7 +156,7 @@ class Skeleton:
         - load from the hard drive
     """
     def __init__(self, name=None):
-        self.__name = name if name else f'skeleton_{str(int(time()))}'
+        self.__name = name if name else 'skeleton_{}'.format(str(int(time())))
         self.__bones = list()
 
     @property
@@ -169,7 +169,7 @@ class Skeleton:
 
     def add_bone(self, bone: Bone):
         if not bone.name:
-            bone.update(name=f'{self.name}_bone_{self.number_of_bones}')
+            bone.update(name='{}_bone_{}'.format(self.name, self.number_of_bones))
         self.__bones.append(bone)
 
     def remove_bone(self, bone_id: int):
@@ -180,8 +180,7 @@ class Skeleton:
             self.__bones[bone_id].update(**kwargs)
         else:
             raise IndexError(
-                f'Skeleton does not have a bone with index {bone_id}. '
-                'It has only {self.number_of_bones} bones.'
+                'Skeleton does not have a bone with index {}. It has only {} bones.'.format(bone_id, self.number_of_bones)
             )
 
     def get_bone(self, idx):
@@ -212,7 +211,7 @@ class Skeleton:
                             bone['position'],
                             bone['color'],
                             bone['thickness'],
-                            name=bone['name'] if 'name' in bone else f'{self.name}_bone_{self.number_of_bones}',
+                            name=bone['name'] if 'name' in bone else '{}_bone_{}'.format(self.name, self.number_of_bones),
                         ))
                     elif bone['type'] == 'CIRCLE':
                         self.__bones.append(CircleBone(
@@ -220,11 +219,11 @@ class Skeleton:
                             bone['position'],
                             bone['color'],
                             bone['thickness'],
-                            name=bone['name'] if 'name' in bone else f'{self.name}_bone_{self.number_of_bones}',
+                            name=bone['name'] if 'name' in bone else '{}_bone_{}'.format(self.name, self.number_of_bones),
                         ))
 
         except FileNotFoundError:
-            raise FileNotFoundError(f'File for skeleton "{self.__name}" was not found.')
+            raise FileNotFoundError('File for skeleton "{}" was not found.'.format(self.__name))
 
     def process_patch(self, opts):
         old_values = dict()
@@ -273,7 +272,7 @@ class Animation:
     Can be exported to GIF.
     """
     def __init__(self, skeleton=None, name=None):
-        self.__name = name if name else f'animation_{str(int(time()))}'
+        self.__name = name if name else 'animation_{}'.format(str(int(time())))
         self.__skeleton = skeleton
         self.__states, self.__transitions = list(), list()
 
@@ -297,9 +296,9 @@ class Animation:
     def check_state(self, state: SkeletonState):
         return
         if not self.__skeleton:
-            raise ValueError(f'There is no skeleton matched for this animation.')
+            raise ValueError('There is no skeleton matched for this animation.')
         elif state.skeleton_name != self.skeleton_name:
-            raise ValueError(f'Can not add a state for a different skeleton to the animation')
+            raise ValueError('Can not add a state for a different skeleton to the animation')
 
     def add_state(self, state: SkeletonState, transition_time=ProjectSettings.default_transition_time):
         self.check_state(state)
@@ -315,7 +314,7 @@ class Animation:
             self.__states.pop(state_id)
             self.__states.insert(state_id, state)
         else:
-            raise IndexError(f'Animation does not have a state with index {state_id}.')
+            raise IndexError('Animation does not have a state with index {}.'.format(state_id))
 
     def remove_state(self, state_id: int):
         if state_id < len(self.__states):
@@ -325,7 +324,7 @@ class Animation:
             else:
                 self.__transitions.pop(state_id - 1)
         else:
-            raise IndexError(f'Animation does not have a state with index {state_id}.')
+            raise IndexError('Animation does not have a state with index {}.'.format(state_id))
 
     def get_state(self, idx):
         return self.__states[idx]
@@ -335,7 +334,7 @@ class Animation:
             self.__transitions.pop(state_id - 1)
             self.__transitions.insert(state_id - 1, transition_time)
         else:
-            raise IndexError(f'Animation does not have a state with index {state_id}.')
+            raise IndexError('Animation does not have a state with index {}.'.format(state_id))
 
     def to_dict(self):
         return dict(
@@ -359,7 +358,7 @@ class Animation:
                 self.__transitions = data['transitions']
                 return data['skeleton_name']
         except FileNotFoundError:
-            raise FileNotFoundError(f'File for animation "{self.__name}" was not found.')
+            raise FileNotFoundError('File for animation "{}" was not found.'.format(self.__name))
 
     def export_to_gif(self):
         pass
@@ -406,27 +405,27 @@ class Project:
         if not self.has_skeleton(skeleton.name):
             self.__skeletons.append(skeleton)
         else:
-            raise NameError(f'Skeleton with name {skeleton.name} already exists in the project.')
+            raise NameError('Skeleton with name {} already exists in the project.'.format(skeleton.name))
 
     def remove_skeleton(self, skeleton_id: int):
         if skeleton_id < self.number_of_skeletons:
             self.__skeletons.pop(skeleton_id)
         else:
-            raise IndexError(f'Project does not have a skeleton with index {skeleton_id}. '
-                             f'It has only {self.number_of_skeletons} skeletons.')
+            raise IndexError('Project does not have a skeleton with index {}. '
+                             'It has only {} skeletons.'.format(skeleton_id, self.number_of_skeletons))
 
     def add_animation(self, animation: Animation):
         if not self.has_animation(animation.name):
             self.__animations.append(animation)
         else:
-            raise NameError(f'Animation with name {animation.name} already exists in the project.')
+            raise NameError('Animation with name {} already exists in the project.'.format(animation.name))
 
     def remove_animation(self, animation_id: int):
         if animation_id < self.number_of_animations:
             self.__animations.pop(animation_id)
         else:
-            raise IndexError(f'Project does not have an animation with index {animation_id}. '
-                             f'It has only {self.number_of_animations} animations.')
+            raise IndexError('Project does not have an animation with index {}. '
+                             'It has only {} animations.'.format(animation_id, self.number_of_animations))
 
     def load(self, path_to_project_dir):
         for filename in os.listdir(os.path.join(path_to_project_dir, ProjectSettings.skeletons_dir)):
