@@ -31,6 +31,7 @@ class Bone(ABC):
     def name(self):
         return self.__name
 
+    @abstractmethod
     def process_patch(self, opts):
         old_values = dict()
         if "name" in opts:
@@ -42,6 +43,9 @@ class Bone(ABC):
         if "thickness" in opts:
             old_values["thickness"] = self.__thickness
             self.__thickness = opts["thickness"]
+        if "color" in opts:
+            old_values["color"] = self.__color
+            self.__color = opts["color"]
         return old_values
 
     @abstractmethod
@@ -96,6 +100,16 @@ class SegmentBone(Bone):
         res['type'] = 'SEGMENT'
         return res
 
+    def process_patch(self, opts):
+        old_values = super().process_patch(opts)
+        if "length" in opts:
+            old_values["length"] = self.__length
+            self.__length = opts["length"]
+        if "rotation" in opts:
+            old_values["rotation"] = self.__rotation
+            self.__rotation = opts["rotation"]
+        return old_values
+
 
 class CircleBone(Bone):
     """
@@ -119,6 +133,13 @@ class CircleBone(Bone):
         res['radius'] = self.__radius
         res['type'] = 'CIRCLE'
         return res
+
+    def process_patch(self, opts):
+        old_values = super().process_patch(opts)
+        if "radius" in opts:
+            old_values["radius"] = self.__radius
+            self.__radius = opts["radius"]
+        return old_values
 
 
 class Skeleton:
