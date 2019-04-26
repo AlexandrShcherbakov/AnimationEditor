@@ -15,7 +15,7 @@ class ResourceViewer(tkinter.Canvas):
             end_x = params["position"][0] + params["length"] * math.cos(params["rotation"])
             end_y = params["position"][1] + params["length"] * math.sin(params["rotation"])
             self.create_line(
-                (params["position"][0], params["position"][0], end_x, end_y),
+                (params["position"][0], params["position"][1], end_x, end_y),
                 fill="#{:02x}{:02x}{:02x}".format(*params["color"]),
                 width=params["thickness"]
             )
