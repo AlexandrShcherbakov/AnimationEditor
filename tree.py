@@ -59,7 +59,7 @@ class ProjectHierarchyView(tkinter.ttk.Treeview):
                 # print(model.get_skeleton(i).get_bone(j).name)
                 bone = self.insert(
                     skeleton, "end",
-                    iid=f'{model.get_skeleton(i).name}_bone_{j}',
+                    iid='{}_bone_{}'.format(model.get_skeleton(i).name, j),
                     text=model.get_skeleton(i).get_bone(j).name,
                     open=True,
                 )
