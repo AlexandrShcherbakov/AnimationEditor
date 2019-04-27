@@ -1,7 +1,7 @@
 import tkinter
 
 import command
-from model import Skeleton, SegmentBone, CircleBone
+from model import Skeleton, SegmentBone, CircleBone, Animation
 
 
 class ResourceEditorViewer(tkinter.Frame):
@@ -132,6 +132,27 @@ class ResourceEditorViewer(tkinter.Frame):
                     "color": (int(col_r.get()), int(col_g.get()), int(col_b.get())),
                     "length": float(length.get()),
                     "rotation": float(rotate.get()),
+                }))
+
+        if isinstance(model.active_element, Animation):
+            lb = tkinter.Label(self, text="Name:")
+            lb.grid(row=0, column=0)
+            name = tkinter.Entry(self, bg="white")
+            name.insert("end", model.active_element.name)
+            name.grid(row=0, column=1)
+
+            lb = tkinter.Label(self, text="Skeleton name:")
+            lb.grid(row=1, column=0)
+            skeleton = tkinter.Entry(self, bg="white")
+            skeleton.insert("end", model.active_element.skeleton_name or "None")
+            skeleton.grid(row=1, column=1)
+
+            last_row = 2
+
+            def save_command():
+                self.__command_list.add_command(command.PatchCommand({
+                    "name": name.get(),
+                    "skeleton": model.get_skeleton(skeleton.get()),
                 }))
 
         save = tkinter.Button(self, text="Save", command=save_command)

@@ -562,6 +562,16 @@ class Animation:
         self.__skeleton = skeleton
         self.__states, self.__transitions = list(), list()
 
+    def process_patch(self, opts):
+        old_values = dict()
+        if "name" in opts:
+            old_values["name"] = self.__name
+            self.__name = opts["name"]
+        if "skeleton" in opts:
+            old_values["skeleton"] = self.__skeleton
+            self.__skeleton = opts["skeleton"]
+        return old_values
+
     @property
     def name(self):
         """
