@@ -497,6 +497,7 @@ class SkeletonState:
         'Vasiliy'
         """
         self.__skeleton = copy.deepcopy(skeleton)
+        self.apply()
 
     def get_skeleton(self):
         """

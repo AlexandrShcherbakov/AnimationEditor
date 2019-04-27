@@ -4,8 +4,130 @@
   "states": [
     {
       "skeleton_name": "Vasilich",
-      "bone_updates": {}
+      "bone_updates": [
+        {
+          "position": [
+            200,
+            100
+          ],
+          "thickness": 1.0,
+          "color": [
+            0,
+            0,
+            0
+          ],
+          "length": 50.0,
+          "rotation": 1.0
+        },
+        {
+          "position": [
+            100,
+            100
+          ],
+          "thickness": 1.0,
+          "color": [
+            0,
+            0,
+            0
+          ],
+          "length": 50.0,
+          "rotation": 2.14
+        },
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {}
+      ]
+    },
+    {
+      "skeleton_name": "Vasilich",
+      "bone_updates": [
+        {
+          "position": [
+            200,
+            100
+          ],
+          "thickness": 3.0,
+          "color": [
+            0,
+            0,
+            0
+          ],
+          "length": 50.0,
+          "rotation": 1.0
+        },
+        {
+          "position": [
+            100,
+            100
+          ],
+          "thickness": 1.0,
+          "color": [
+            0,
+            0,
+            0
+          ],
+          "length": 50.0,
+          "rotation": 2.14
+        },
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {}
+      ]
+    },
+    {
+      "skeleton_name": "Vasilich",
+      "bone_updates": [
+        {
+          "position": [
+            200,
+            100
+          ],
+          "thickness": 5.0,
+          "color": [
+            0,
+            0,
+            0
+          ],
+          "length": 50.0,
+          "rotation": 1.0
+        },
+        {
+          "position": [
+            100,
+            100
+          ],
+          "thickness": 1.0,
+          "color": [
+            0,
+            0,
+            0
+          ],
+          "length": 50.0,
+          "rotation": 2.14
+        },
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {}
+      ]
     }
   ],
-  "transitions": []
+  "transitions": [
+    1.0,
+    1.0
+  ]
 }

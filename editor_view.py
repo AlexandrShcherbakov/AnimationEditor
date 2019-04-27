@@ -177,7 +177,7 @@ class ResourceEditorViewer(tkinter.Canvas):
             rotates = dict()
 
             if model.active_element.skeleton_name:
-                skeleton = model.get_skeleton(model.active_element.skeleton_name)
+                skeleton = model.active_element.get_skeleton() or model.get_skeleton(model.active_element.skeleton_name)
                 for i in range(skeleton.number_of_bones):
                     if i == 2:
                         break
