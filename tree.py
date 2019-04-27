@@ -49,14 +49,13 @@ class ProjectHierarchyView(tkinter.ttk.Treeview):
                 text=model.get_skeleton(i).name,
                 open=True
             )
-            print(model.get_skeleton(i).name)
+
             if model.get_skeleton(i) == model.active_element:
                 self.focus(skeleton)
                 self.selection_set(skeleton)
             self.__items[skeleton] = model.get_skeleton(i)
 
             for j in range(model.get_skeleton(i).number_of_bones):
-                # print(model.get_skeleton(i).get_bone(j).name)
                 bone = self.insert(
                     skeleton, "end",
                     iid='{}_bone_{}'.format(model.get_skeleton(i).name, j),
