@@ -272,7 +272,7 @@ class Skeleton:
             bone.process_patch(dict(name='{}_bone_{}'.format(self.name, self.number_of_bones)))
         self.__bones.append(bone)
 
-    def remove_bone(self, idx : int):
+    def remove_bone(self, idx: int):
         """
         :param idx: index of the bone that should be removed
         :return: raises and exception if idx >= number of bones
@@ -341,8 +341,7 @@ class Skeleton:
         >>> skeleton.get_bone(0).to_dict()
         {'position': (0, 0), 'color': (0, 0, 0), 'thickness': 1.0, 'name': 'Head', 'radius': 10, 'type': 'CIRCLE'}
 
-        >>> skeleton.get_bone(1).to_dict()
-        {'position': (1, 1), 'color': (0, 0, 0), 'thickness': 1.0, 'name': 'Vasiliy_bone_1', 'length': 10, 'rotation': 1, 'type': 'SEGMENT'}
+        >>> assert skeleton.get_bone(1).to_dict() == fixtures.skeleton_get_bone_fixture
 
         """
         if idx < self.number_of_bones:
@@ -544,57 +543,174 @@ class Animation:
     Addition of the new move (SkeletonState) creates transition time before that move.
     Removing of the state removes transition time before the state.
     Can be saved to the hard drive and loaded from there.
+
+    >>> skeleton = Skeleton(name='Vasiliy')
+    >>> animation = Animation(skeleton, 'Dancing')
     """
+
     def __init__(self, skeleton=None, name=None):
+        """
+        :param skeleton: skeleton which should execute this animation
+        :param name: name of the animation
+        If name is not provided, generates it as animation_{timestamp}
+        >>> skeleton = Skeleton(name='Vasiliy')
+        >>> animation = Animation(skeleton, 'Dancing')
+        >>> animation.to_dict()
+        {'name': 'Dancing', 'skeleton_name': 'Vasiliy', 'states': [], 'transitions': []}
+        """
         self.__name = name if name else 'animation_{}'.format(str(int(time())))
         self.__skeleton = skeleton
         self.__states, self.__transitions = list(), list()
 
     @property
     def name(self):
+        """
+        :return: name of the animation
+        >>> Animation(name='Dancing').name
+        'Dancing'
+        """
         return self.__name
 
     @property
     def skeleton_name(self):
+        """
+        :return: name of the skeleton
+        >>> Animation(skeleton=Skeleton(name='Vasiliy')).skeleton_name
+        'Vasiliy'
+        """
         return self.__skeleton.name if self.__skeleton else None
 
     @property
     def number_of_states(self):
+        """
+        :return: number of states in the animation
+        >>> skeleton = Skeleton(name='Vasiliy')
+        >>> animation = Animation(skeleton, 'Dancing')
+        >>> animation.number_of_states
+        0
+        >>> animation.add_state(SkeletonState(skeleton, None))
+        >>> animation.number_of_states
+        1
+        """
         return len(self.__states)
 
     def set_skeleton(self, skeleton: Skeleton):
+        """
+        :param skeleton: skeleton which is the animation for
+        :return: None
+        >>> animation = Animation(name='Dancing')
+        >>> skeleton = Skeleton(name='Vasiliy')
+        >>> animation.set_skeleton(skeleton)
+        >>> animation.skeleton_name
+        'Vasiliy'
+        """
         self.__skeleton = skeleton
         for state in self.__states:
             state.set_skeleton(skeleton)
 
     def add_state(self, state: SkeletonState, transition_time=ProjectSettings.default_transition_time):
+        """
+        :param state: state to be added
+        :param transition_time: transition time before state if state is not first
+        :return: None
+        >>> skeleton = Skeleton(name='Vasiliy')
+        >>> state_1 = SkeletonState(skeleton)
+        >>> state_2 = SkeletonState(skeleton)
+        >>> animation = Animation(skeleton, name='Dancing')
+        >>> animation.add_state(state_1)
+        >>> assert animation.to_dict() == fixtures.animation_with_one_state_fixture
+        >>> animation.add_state(state_2)
+        >>> assert animation.to_dict() == fixtures.animation_with_two_states_fixture
+        """
         if not self.__states:
             self.__states.append(state)
         else:
             self.__states.append(state)
             self.__transitions.append(transition_time)
 
-    def update_state(self, state_id: int, state: SkeletonState):
-        if state_id < len(self.__states):
-            self.__states.pop(state_id)
-            self.__states.insert(state_id, state)
-        else:
-            raise IndexError('Animation does not have a state with index {}.'.format(state_id))
+    def update_state(self, idx: int, state: SkeletonState):
+        """
+        :param idx: index of the state to be updated
+        :param state: new version of the state
+        :return: raises IndexError if idx >= number of states
 
-    def remove_state(self, state_id: int):
-        if state_id < len(self.__states):
-            self.__states.pop(state_id)
-            if state_id == 0:
-                self.__transitions.pop(0)
-            else:
-                self.__transitions.pop(state_id - 1)
+        >>> skeleton = Skeleton(name='Vasiliy')
+        >>> state_1 = SkeletonState(skeleton)
+        >>> state_2 = SkeletonState(skeleton)
+        >>> animation = Animation(skeleton, name='Dancing')
+        >>> animation.add_state(state_2)
+        >>> animation.update_state(0, state_1)
+        >>> assert animation.to_dict() == fixtures.animation_with_one_state_fixture
+        """
+        if idx < len(self.__states):
+            self.__states.pop(idx)
+            self.__states.insert(idx, state)
         else:
-            raise IndexError('Animation does not have a state with index {}.'.format(state_id))
+            raise IndexError('Animation does not have a state with index {}.'.format(idx))
+
+    def remove_state(self, idx: int):
+        """
+        :param idx: index of the state to be removed
+        :return: raises IndexError if idx >= number of states
+        >>> skeleton = Skeleton(name='Vasiliy')
+        >>> state_1 = SkeletonState(skeleton)
+        >>> state_2 = SkeletonState(skeleton)
+        >>> animation = Animation(skeleton, name='Dancing')
+        >>> animation.add_state(state_1)
+        >>> animation.add_state(state_2)
+        >>> animation.remove_state(12)
+        Traceback (most recent call last):
+        ...
+        IndexError: Animation does not have a state with index 12.
+        >>> animation.remove_state(1)
+        >>> animation.number_of_states
+        1
+        >>> animation.remove_state(0)
+        >>> animation.number_of_states
+        0
+        """
+        if idx < len(self.__states):
+            self.__states.pop(idx)
+            if idx > 0:
+                self.__transitions.pop(idx - 1)
+        else:
+            raise IndexError('Animation does not have a state with index {}.'.format(idx))
 
     def get_state(self, idx):
-        return self.__states[idx]
+        """
+        :param idx: index of the state to be returned
+        :return: SkeltonState. Raises IndexError if idx >= number of states
+        >>> skeleton = Skeleton(name='Vasiliy')
+        >>> state_1 = SkeletonState(skeleton)
+        >>> state_2 = SkeletonState(skeleton)
+        >>> animation = Animation(skeleton, name='Dancing')
+        >>> animation.add_state(state_1)
+        >>> animation.add_state(state_2)
+        >>> animation.get_state(12)
+        Traceback (most recent call last):
+        ...
+        IndexError: Animation does not have a state with index 12.
+        >>> assert state_2 == animation.get_state(1)
+        """
+        if idx < len(self.__states):
+            return self.__states[idx]
+        else:
+            raise IndexError('Animation does not have a state with index {}.'.format(idx))
 
     def change_transition_time(self, state_id: int, transition_time=ProjectSettings.default_transition_time):
+        """
+        :param state_id: index of the state which is the end of the transition
+        :param transition_time: new time
+        :return: raises IndexError if idx >= number of states
+        >>> skeleton = Skeleton(name='Vasiliy')
+        >>> state_1 = SkeletonState(skeleton)
+        >>> state_2 = SkeletonState(skeleton)
+        >>> animation = Animation(skeleton, name='Dancing')
+        >>> animation.add_state(state_1)
+        >>> animation.add_state(state_2)
+        >>> animation.change_transition_time(1, 10)
+        >>> assert animation.to_dict() == fixtures.animation_with_changed_transition
+        """
         if state_id < len(self.__states) and state_id != 0:
             self.__transitions.pop(state_id - 1)
             self.__transitions.insert(state_id - 1, transition_time)
@@ -602,6 +718,17 @@ class Animation:
             raise IndexError('Animation does not have a state with index {}.'.format(state_id))
 
     def to_dict(self):
+        """
+        :return: dictionary with attributes of the animation.
+        >>> skeleton = Skeleton(name='Vasiliy')
+        >>> state_1 = SkeletonState(skeleton)
+        >>> state_2 = SkeletonState(skeleton)
+        >>> animation = Animation(skeleton, name='Dancing')
+        >>> animation.add_state(state_1)
+        >>> assert animation.to_dict() == fixtures.animation_with_one_state_fixture
+        >>> animation.add_state(state_2)
+        >>> assert animation.to_dict() == fixtures.animation_with_two_states_fixture
+        """
         return dict(
             name=self.__name,
             skeleton_name=self.skeleton_name,
@@ -609,13 +736,21 @@ class Animation:
             transitions=self.__transitions,
         )
 
-    def save(self, path_to_project_dir):
-        if not self.__states:
-            raise ValueError('Animation has nothing to save.')
-        with open(os.path.join(path_to_project_dir, ProjectSettings.animations_dir, self.name), 'w') as file:
-            json.dump(self.to_dict(), file, indent=2)
-
     def load(self, path_to_project_dir):
+        """
+        Loads an animation from the directory of the project if there is a saved animation with that name.
+        :param path_to_project_dir: path to the directory where project was saved
+        :return: name of the skeleton. Raises an exception if there is no file for the animation
+        # >>> animation = Animation(name='Dancing')
+        # >>> skeleton.load('TestProject')
+        # >>> assert animation.to_dict() == ???
+        TODO: complete test
+        >>> animation = Animation(name="Slamming")
+        >>> animation.load('TestProject')
+        Traceback (most recent call last):
+        ...
+        FileNotFoundError: File for animation "Slamming" was not found.
+        """
         try:
             with open(os.path.join(path_to_project_dir, ProjectSettings.animations_dir, self.name), 'r') as file:
                 data = json.load(file)
@@ -624,6 +759,16 @@ class Animation:
                 return data['skeleton_name']
         except FileNotFoundError:
             raise FileNotFoundError('File for animation "{}" was not found.'.format(self.__name))
+
+    def save(self, path_to_project_dir):
+        """
+        Saves an animation to the file inside "animations" directory inside the project directory.
+        Name of the file is the name of the animation.
+        :param path_to_project_dir: path to the directory where project is going to be saved
+        TODO: test
+        """
+        with open(os.path.join(path_to_project_dir, ProjectSettings.animations_dir, self.name), 'w') as file:
+            json.dump(self.to_dict(), file, indent=2)
 
 
 class Project:
@@ -728,8 +873,3 @@ class Project:
 
     def register_view(self, view):
         self.__views.append(view)
-
-
-if __name__ == "__main__":
-    import doctest
-    doctest.testmod(verbose=True)

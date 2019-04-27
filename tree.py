@@ -33,8 +33,8 @@ class ProjectHierarchyView(tkinter.ttk.Treeview):
             for j in range(model.get_animation(i).number_of_states):
                 state = self.insert(
                     animation, "end",
-                    iid="{}_state_{}".format(model.get_animation(i).name,j),
-                    text="{}_state_{}".format(model.get_animation(i).name,j),
+                    iid="{}_state_{}".format(model.get_animation(i).name, j),
+                    text="{}_state_{}".format(model.get_animation(i).name, j),
                     open=True,
                 )
                 if model.get_animation(i).get_state(j) == model.active_element:
