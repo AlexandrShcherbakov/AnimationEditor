@@ -3,6 +3,7 @@ This is the Model's file in our MVC framework.
 It contains data structure and data managing.
 """
 
+import copy
 import json
 import os
 import shutil
@@ -495,7 +496,7 @@ class SkeletonState:
         >>> state.skeleton_name
         'Vasiliy'
         """
-        self.__skeleton = skeleton
+        self.__skeleton = copy.deepcopy(skeleton)
 
     def get_skeleton(self):
         """
@@ -518,7 +519,7 @@ class SkeletonState:
         >>> fixture['bones'][9]['radius'] = 100
         >>> assert fixture == state.get_skeleton().to_dict()
         """
-        for bone_idx in self.__updates:
+        for bone_idx in range(len(self.__updates)):
             self.__skeleton.update_bone(bone_idx, self.__updates[bone_idx])
 
     def to_dict(self):
@@ -533,6 +534,12 @@ class SkeletonState:
             skeleton_name=self.skeleton_name,
             bone_updates=self.__updates,
         )
+
+    def process_patch(self, opts):
+        old_values = self.__updates
+        self.__updates = opts
+        self.apply()
+        return old_values
 
 
 class Animation:
@@ -569,7 +576,7 @@ class Animation:
             self.__name = opts["name"]
         if "skeleton" in opts:
             old_values["skeleton"] = self.__skeleton
-            self.__skeleton = opts["skeleton"]
+            self.set_skeleton(opts["skeleton"])
         return old_values
 
     @property
@@ -632,6 +639,7 @@ class Animation:
         >>> animation.add_state(state_2)
         >>> assert animation.to_dict() == fixtures.animation_with_two_states_fixture
         """
+        state.set_skeleton(self.__skeleton)
         if not self.__states:
             self.__states.append(state)
         else:

@@ -79,12 +79,12 @@ class MainWindow(tkinter.Tk):
         self.canvas.grid(row=0, column=0, sticky=tkinter.N+tkinter.E+tkinter.S+tkinter.W)
         self.__project.register_view(self.canvas)
 
-        self.options = editor_view.ResourceEditorViewer(self.__command_list)
+        self.options = editor_view.ResourceEditorViewer(self, self.__command_list)
         self.options.grid(row=0, column=1, sticky=tkinter.N+tkinter.E+tkinter.S+tkinter.W)
         self.__project.register_view(self.options)
 
         self.project_view = tree.ProjectHierarchyView(self.__command_list)
-        self.project_view.grid(row=0, column=2, sticky=tkinter.N+tkinter.E+tkinter.S+tkinter.W)
+        self.project_view.grid(row=0, column=3, sticky=tkinter.N+tkinter.E+tkinter.S+tkinter.W)
         self.__project.register_view(self.project_view)
 
     def load_project(self):

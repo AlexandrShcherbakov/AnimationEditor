@@ -1,6 +1,11 @@
 {
   "name": "Sertaki",
   "skeleton_name": "Vasilich",
-  "states": [],
+  "states": [
+    {
+      "skeleton_name": "Vasilich",
+      "bone_updates": {}
+    }
+  ],
   "transitions": []
 }
