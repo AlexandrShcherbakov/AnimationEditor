@@ -60,4 +60,4 @@ class ResourceViewer(tkinter.Canvas):
             self.delete("all")
             self.__draw_skeleton(self.__animation.get_state(self.current_state).get_skeleton())
             self.current_state = (self.current_state + 1) % self.__animation.number_of_states
-            self.after(1000, self.update_clock)
+            self.after(self.__animation.get_transition_time(self.current_state), self.update_clock)

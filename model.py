@@ -578,6 +578,9 @@ class Animation:
         if "skeleton" in opts:
             old_values["skeleton"] = self.__skeleton
             self.set_skeleton(opts["skeleton"])
+        if "transitions" in opts:
+            old_values["transitions"] = self.__transitions
+            self.__transitions = opts["transitions"]
         return old_values
 
     @property
@@ -788,6 +791,11 @@ class Animation:
         """
         with open(os.path.join(path_to_project_dir, ProjectSettings.animations_dir, self.name), 'w') as file:
             json.dump(self.to_dict(), file, indent=2)
+
+    def get_transition_time(self, idx):
+        if idx == 0:
+            return 1000
+        return int(self.__transitions[idx - 1] * 1000)
 
 
 class Project:

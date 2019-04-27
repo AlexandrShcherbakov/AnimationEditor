@@ -157,10 +157,26 @@ class ResourceEditorViewer(tkinter.Canvas):
 
             last_row = 2
 
+            trans = model.active_element.to_dict()["transitions"]
+            trans_vals = list()
+
+            for i in range(len(trans)):
+                lb = tkinter.Label(self, text="Transition:")
+                lb.grid(row=last_row, column=0)
+                trans_vals.append(tkinter.Entry(self, bg="white"))
+                trans_vals[-1].insert("end", trans[i])
+                trans_vals[-1].grid(row=last_row, column=1)
+                last_row += 1
+
             def save_command():
+                trans = list()
+                for i in range(len(trans_vals)):
+                    trans.append(float(trans_vals[i].get()))
+
                 self.__command_list.add_command(command.PatchCommand({
                     "name": name.get(),
                     "skeleton": model.get_skeleton(skeleton.get()),
+                    "transitions": trans,
                 }))
 
         if isinstance(model.active_element, SkeletonState):
