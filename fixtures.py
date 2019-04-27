@@ -18,6 +18,16 @@ segment_bone_process_patch_fixture = {
     'type': 'SEGMENT'
 }
 
+skeleton_get_bone_fixture = {
+    'position': (1, 1),
+    'color': (0, 0, 0),
+    'thickness': 1.0,
+    'name': 'Vasiliy_bone_1',
+    'length': 10,
+    'rotation': 1,
+    'type': 'SEGMENT'
+}
+
 skeleton_update_bone_fixture = {
     'name': 'Vasiliy',
     'bones': [
@@ -227,4 +237,52 @@ skeleton_loaded_fixture = {
       "type": "CIRCLE"
     }
   ]
+}
+
+animation_with_one_state_fixture = {
+    'name': 'Dancing',
+    'skeleton_name': 'Vasiliy',
+    'states': [
+        {
+            'skeleton_name': 'Vasiliy',
+            'bone_updates': {}
+        }
+    ],
+    'transitions': []
+}
+
+animation_with_two_states_fixture = {
+    'name': 'Dancing',
+    'skeleton_name': 'Vasiliy',
+    'states': [
+        {
+            'skeleton_name': 'Vasiliy',
+            'bone_updates': {}
+        },
+        {
+            'skeleton_name': 'Vasiliy',
+            'bone_updates': {}
+        }
+    ],
+    'transitions': [
+        1.0
+    ]
+}
+
+animation_with_changed_transition = {
+    'name': 'Dancing',
+    'skeleton_name': 'Vasiliy',
+    'states': [
+        {
+            'skeleton_name': 'Vasiliy',
+            'bone_updates': {}
+        },
+        {
+            'skeleton_name': 'Vasiliy',
+            'bone_updates': {}
+        }
+    ],
+    'transitions': [
+        10
+    ]
 }
