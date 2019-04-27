@@ -166,7 +166,7 @@ class ResourceEditorViewer(tkinter.Canvas):
         if isinstance(model.active_element, SkeletonState):
             def bone_name(name, minuses=20):
                 return "-" * ((minuses - len(name)) // 2) + name + "-" * ((minuses - len(name) + 1) // 2)
-                        
+
             last_row = 0
 
             positions = dict()
@@ -202,7 +202,11 @@ class ResourceEditorViewer(tkinter.Canvas):
 
                     lb = tkinter.Label(self, text="Color:")
                     lb.grid(row=last_row, column=0)
-                    colors[i] = [tkinter.Entry(self, bg="white"), tkinter.Entry(self, bg="white"), tkinter.Entry(self, bg="white")]
+                    colors[i] = [
+                        tkinter.Entry(self, bg="white"),
+                        tkinter.Entry(self, bg="white"),
+                        tkinter.Entry(self, bg="white"),
+                    ]
                     for j in range(len(colors[i])):
                         colors[i][j].insert("end", bone.to_dict()["color"][j])
                         colors[i][j].grid(row=last_row, column=j + 1)

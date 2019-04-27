@@ -55,7 +55,6 @@ class ResourceViewer(tkinter.Canvas):
             self.current_state = 0
             self.update_clock()
 
-
     def update_clock(self):
         if self.__animation and self.__animation.number_of_states:
             self.delete("all")
