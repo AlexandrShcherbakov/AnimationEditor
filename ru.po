@@ -1,0 +1,79 @@
+# Russian translations for 9.75 package
+# Английские переводы для пакета 9.75.
+# Copyright (C) 2019 ORGANIZATION
+# nik <nik@mail.ru>, 2019.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: 9.75\n"
+"POT-Creation-Date: 2019-04-27 17:08+MSK\n"
+"PO-Revision-Date: 2019-04-28 20:59+0300\n"
+"Last-Translator: NeCola <necola@vedro>\n"
+"Language-Team: Russian\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: pygettext.py 1.5\n"
+"Language: ru\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+
+#: main.py:28
+msgid "Animation creator"
+msgstr "Редактор анимаций"
+
+#: main.py:40
+msgid "Open Project"
+msgstr "Открыть проект"
+
+#: main.py:41
+msgid "Save Project"
+msgstr "Сохранить проект"
+
+#: main.py:42
+msgid "Exit"
+msgstr "Выйти"
+
+#: main.py:43
+msgid "File"
+msgstr "Файл"
+
+#: main.py:46
+msgid "Redo"
+msgstr "Повторить"
+
+#: main.py:47
+msgid "Undo"
+msgstr "Отменить"
+
+#: main.py:50
+msgid "Animation"
+msgstr "Анимация"
+
+#: main.py:53
+msgid "State"
+msgstr "Состояние"
+
+#: main.py:56
+msgid "Skeleton"
+msgstr "Скелет"
+
+#: main.py:59
+msgid "Line bone"
+msgstr "Кость"
+
+#: main.py:62
+msgid "Circle bone"
+msgstr "Череп"
+
+#: main.py:66
+msgid "Add"
+msgstr "Добавить"
+
+#: main.py:67
+msgid "Edit"
+msgstr "Редактировать"
+
+#: main.py:70 main.py:71
+msgid "Help"
+msgstr "Помощь"
