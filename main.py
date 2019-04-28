@@ -5,7 +5,6 @@ Animation creator is a simple tools for create the
 2D skeleton animation and export it to GIF or atlas.
 """
 
-import os
 import tkinter
 import tkinter.ttk
 
