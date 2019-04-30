@@ -1,7 +1,9 @@
 import tkinter.ttk
 
 import command
+import gettext
 
+gettext.install('app', '.')
 
 class ProjectHierarchyView(tkinter.ttk.Treeview):
     def __init__(self, command_list):
@@ -16,8 +18,8 @@ class ProjectHierarchyView(tkinter.ttk.Treeview):
         self.__items.clear()
         self.__default_item = model
 
-        animations = self.insert("", "end", text="Animations", open=True)
-        skeletons = self.insert("", "end", text="Skeletons", open=True)
+        animations = self.insert("", "end", text=_("Animations"), open=True)
+        skeletons = self.insert("", "end", text=_("Skeletons"), open=True)
 
         for i in range(model.number_of_animations):
             animation = self.insert(

@@ -2,7 +2,9 @@ import tkinter
 
 import command
 from model import Skeleton, SegmentBone, CircleBone, Animation, SkeletonState
+import gettext
 
+gettext.install('app', '.')
 
 class ResourceEditorViewer(tkinter.Canvas):
     def __init__(self, parent, command_list):
@@ -23,7 +25,7 @@ class ResourceEditorViewer(tkinter.Canvas):
         save_command = None
 
         if isinstance(model.active_element, Skeleton):
-            lb = tkinter.Label(self.interior, text="Name:")
+            lb = tkinter.Label(self.interior, text=_("Name:"))
             lb.grid(row=0, column=0)
             name = tkinter.Entry(self.interior, bg="white")
             name.insert("end", model.active_element.name)
@@ -34,13 +36,13 @@ class ResourceEditorViewer(tkinter.Canvas):
                 self.__command_list.add_command(command.PatchCommand({"name": name.get()}))
 
         if isinstance(model.active_element, CircleBone):
-            lb = tkinter.Label(self.interior, text="Name:")
+            lb = tkinter.Label(self.interior, text=_("Name:"))
             lb.grid(row=0, column=0)
             name = tkinter.Entry(self.interior, bg="white")
             name.insert("end", model.active_element.name)
             name.grid(row=0, column=1)
 
-            lb = tkinter.Label(self.interior, text="Position:")
+            lb = tkinter.Label(self.interior, text=_("Position:"))
             lb.grid(row=1, column=0)
             pos_x = tkinter.Entry(self.interior, bg="white")
             pos_x.insert("end", model.active_element.to_dict()["position"][0])
@@ -49,7 +51,7 @@ class ResourceEditorViewer(tkinter.Canvas):
             pos_y.insert("end", model.active_element.to_dict()["position"][1])
             pos_y.grid(row=1, column=2)
 
-            lb = tkinter.Label(self.interior, text="Thickness:")
+            lb = tkinter.Label(self.interior, text=_("Thickness:"))
             lb.grid(row=2, column=0)
             thickness = tkinter.Entry(self.interior, bg="white")
             thickness.insert("end", model.active_element.to_dict()["thickness"])
@@ -67,7 +69,7 @@ class ResourceEditorViewer(tkinter.Canvas):
             col_b.insert("end", model.active_element.to_dict()["color"][2])
             col_b.grid(row=3, column=3)
 
-            lb = tkinter.Label(self.interior, text="Radius:")
+            lb = tkinter.Label(self.interior, text=_("Radius:"))
             lb.grid(row=4, column=0)
             radius = tkinter.Entry(self.interior, bg="white")
             radius.insert("end", model.active_element.to_dict()["radius"])
@@ -85,13 +87,13 @@ class ResourceEditorViewer(tkinter.Canvas):
                 }))
 
         if isinstance(model.active_element, SegmentBone):
-            lb = tkinter.Label(self.interior, text="Name:")
+            lb = tkinter.Label(self.interior, text=_("Name:"))
             lb.grid(row=0, column=0)
             name = tkinter.Entry(self.interior, bg="white")
             name.insert("end", model.active_element.name)
             name.grid(row=0, column=1)
 
-            lb = tkinter.Label(self.interior, text="Position:")
+            lb = tkinter.Label(self.interior, text=_("Position:"))
             lb.grid(row=1, column=0)
             pos_x = tkinter.Entry(self.interior, bg="white")
             pos_x.insert("end", model.active_element.to_dict()["position"][0])
@@ -100,13 +102,13 @@ class ResourceEditorViewer(tkinter.Canvas):
             pos_y.insert("end", model.active_element.to_dict()["position"][1])
             pos_y.grid(row=1, column=2)
 
-            lb = tkinter.Label(self.interior, text="Thickness:")
+            lb = tkinter.Label(self.interior, text=_("Thickness:"))
             lb.grid(row=2, column=0)
             thickness = tkinter.Entry(self.interior, bg="white")
             thickness.insert("end", model.active_element.to_dict()["thickness"])
             thickness.grid(row=2, column=1)
 
-            lb = tkinter.Label(self.interior, text="Color:")
+            lb = tkinter.Label(self.interior, text=_("Color:"))
             lb.grid(row=3, column=0)
             col_r = tkinter.Entry(self.interior, bg="white")
             col_r.insert("end", model.active_element.to_dict()["color"][0])
@@ -118,13 +120,13 @@ class ResourceEditorViewer(tkinter.Canvas):
             col_b.insert("end", model.active_element.to_dict()["color"][2])
             col_b.grid(row=3, column=3)
 
-            lb = tkinter.Label(self.interior, text="Length:")
+            lb = tkinter.Label(self.interior, text=_("Length:"))
             lb.grid(row=4, column=0)
             length = tkinter.Entry(self.interior, bg="white")
             length.insert("end", model.active_element.to_dict()["length"])
             length.grid(row=4, column=1)
 
-            lb = tkinter.Label(self.interior, text="Rotation:")
+            lb = tkinter.Label(self.interior, text=_("Rotation:"))
             lb.grid(row=5, column=0)
             rotate = tkinter.Entry(self.interior, bg="white")
             rotate.insert("end", model.active_element.to_dict()["rotation"])
@@ -143,13 +145,13 @@ class ResourceEditorViewer(tkinter.Canvas):
                 }))
 
         if isinstance(model.active_element, Animation):
-            lb = tkinter.Label(self.interior, text="Name:")
+            lb = tkinter.Label(self.interior, text=_("Name:"))
             lb.grid(row=0, column=0)
             name = tkinter.Entry(self.interior, bg="white")
             name.insert("end", model.active_element.name)
             name.grid(row=0, column=1)
 
-            lb = tkinter.Label(self.interior, text="Skeleton name:")
+            lb = tkinter.Label(self.interior, text=_("Skeleton name:"))
             lb.grid(row=1, column=0)
             skeleton = tkinter.Entry(self.interior, bg="white")
             skeleton.insert("end", model.active_element.skeleton_name or "None")
@@ -161,7 +163,7 @@ class ResourceEditorViewer(tkinter.Canvas):
             trans_vals = list()
 
             for i in range(len(trans)):
-                lb = tkinter.Label(self.interior, text="Transition:")
+                lb = tkinter.Label(self.interior, text=_("Transition:"))
                 lb.grid(row=last_row, column=0)
                 trans_vals.append(tkinter.Entry(self.interior, bg="white"))
                 trans_vals[-1].insert("end", trans[i])
@@ -201,7 +203,7 @@ class ResourceEditorViewer(tkinter.Canvas):
                     lb = tkinter.Label(self.interior, text=bone_name(bone.name), justify="center")
                     lb.grid(row=last_row, column=0)
                     last_row += 1
-                    lb = tkinter.Label(self.interior, text="Position:")
+                    lb = tkinter.Label(self.interior, text=_("Position:"))
                     lb.grid(row=last_row, column=0)
                     positions[i] = [tkinter.Entry(self.interior, bg="white"), tkinter.Entry(self.interior, bg="white")]
                     for j in range(len(positions[i])):
@@ -209,7 +211,7 @@ class ResourceEditorViewer(tkinter.Canvas):
                         positions[i][j].grid(row=last_row, column=j + 1)
                     last_row += 1
 
-                    lb = tkinter.Label(self.interior, text="Thickness:")
+                    lb = tkinter.Label(self.interior, text=_("Thickness:"))
                     lb.grid(row=last_row, column=0)
                     thickness[i] = tkinter.Entry(self.interior, bg="white")
                     thickness[i].insert("end", bone.to_dict()["thickness"])
@@ -229,21 +231,21 @@ class ResourceEditorViewer(tkinter.Canvas):
                     last_row += 1
 
                     if isinstance(bone, CircleBone):
-                        lb = tkinter.Label(self.interior, text="Radius:")
+                        lb = tkinter.Label(self.interior, text=_("Radius:"))
                         lb.grid(row=last_row, column=0)
                         radiuses[i] = tkinter.Entry(self.interior, bg="white")
                         radiuses[i].insert("end", bone.to_dict()["radius"])
                         radiuses[i].grid(row=last_row, column=1)
                         last_row += 1
                     elif isinstance(bone, SegmentBone):
-                        lb = tkinter.Label(self.interior, text="Length:")
+                        lb = tkinter.Label(self.interior, text=_("Length:"))
                         lb.grid(row=last_row, column=0)
                         lengthes[i] = tkinter.Entry(self.interior, bg="white")
                         lengthes[i].insert("end", bone.to_dict()["length"])
                         lengthes[i].grid(row=last_row, column=1)
                         last_row += 1
 
-                        lb = tkinter.Label(self.interior, text="Rotation:")
+                        lb = tkinter.Label(self.interior, text=_("Rotation:"))
                         lb.grid(row=last_row, column=0)
                         rotates[i] = tkinter.Entry(self.interior, bg="white")
                         rotates[i].insert("end", bone.to_dict()["rotation"])
@@ -268,7 +270,7 @@ class ResourceEditorViewer(tkinter.Canvas):
 
                 self.__command_list.add_command(command.PatchCommand(patch))
 
-        save = tkinter.Button(self.interior, text="Save", command=save_command)
+        save = tkinter.Button(self.interior, text=_("Save"), command=save_command)
         save.grid(row=last_row, column=0)
 
         self.configure(scrollregion=self.bbox('all'))

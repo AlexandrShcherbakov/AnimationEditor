@@ -7,6 +7,7 @@ Animation creator is a simple tools for create the
 
 import tkinter
 import tkinter.ttk
+import gettext
 
 from tkinter.filedialog import askdirectory
 
@@ -16,12 +17,14 @@ import command
 import editor_view
 import tree
 
+gettext.install('app', '.')
+
 
 class MainWindow(tkinter.Tk):
     """This is main window of the aplication. It contains static UI."""
     def __init__(self, project, command_list):
         tkinter.Tk.__init__(self)
-        self.title("Animation creator")
+        self.title(_("Animation creator"))
         self.__command_list = command_list
         self.__project = project
         self._init_menu()
@@ -33,38 +36,38 @@ class MainWindow(tkinter.Tk):
         self.config(menu=self.main_menu)
 
         file_menu = tkinter.Menu(self.main_menu)
-        file_menu.add_command(label="Open Project", command=self.load_project)
-        file_menu.add_command(label="Save Project", command=self.save_project)
-        file_menu.add_command(label="Exit", command=self.quit)
-        self.main_menu.add_cascade(label="File", menu=file_menu)
+        file_menu.add_command(label=_("Open Project"), command=self.load_project)
+        file_menu.add_command(label=_("Save Project"), command=self.save_project)
+        file_menu.add_command(label=_("Exit"), command=self.quit)
+        self.main_menu.add_cascade(label=_("File"), menu=file_menu)
 
         edit_menu = tkinter.Menu(self.main_menu)
-        edit_menu.add_command(label="Redo", command=self.__command_list.redo)
-        edit_menu.add_command(label="Undo", command=self.__command_list.undo)
+        edit_menu.add_command(label=_("Redo"), command=self.__command_list.redo)
+        edit_menu.add_command(label=_("Undo"), command=self.__command_list.undo)
 
         self.add_menu = tkinter.Menu(edit_menu)
-        self.add_menu.add_command(label="Animation", command=lambda: self.__command_list.add_command(
+        self.add_menu.add_command(label=_("Animation"), command=lambda: self.__command_list.add_command(
             command.AddAnimationCommand(Animation())
         ))
-        self.add_menu.add_command(label="State", command=lambda: self.__command_list.add_command(
+        self.add_menu.add_command(label=_("State"), command=lambda: self.__command_list.add_command(
             command.AddStateCommand(SkeletonState())
         ))
-        self.add_menu.add_command(label="Skeleton", command=lambda: self.__command_list.add_command(
+        self.add_menu.add_command(label=_("Skeleton"), command=lambda: self.__command_list.add_command(
             command.AddSkeletonCommand(Skeleton())
         ))
-        self.add_menu.add_command(label="Line bone", command=lambda: self.__command_list.add_command(
+        self.add_menu.add_command(label=_("Line bone"), command=lambda: self.__command_list.add_command(
             command.AddBoneCommand(SegmentBone(50, 0, (100, 100)))
         ))
-        self.add_menu.add_command(label="Circle bone", command=lambda: self.__command_list.add_command(
+        self.add_menu.add_command(label=_("Circle bone"), command=lambda: self.__command_list.add_command(
             command.AddBoneCommand(CircleBone(50, (100, 100)))
         ))
 
-        edit_menu.add_cascade(label="Add", menu=self.add_menu)
-        self.main_menu.add_cascade(label="Edit", menu=edit_menu)
+        edit_menu.add_cascade(label=_("Add"), menu=self.add_menu)
+        self.main_menu.add_cascade(label=_("Edit"), menu=edit_menu)
 
         help_menu = tkinter.Menu(self.main_menu)
-        help_menu.add_command(label="Help")
-        self.main_menu.add_cascade(label="Help", menu=help_menu)
+        help_menu.add_command(label=_("Help"))
+        self.main_menu.add_cascade(label=_("Help"), menu=help_menu)
 
         self.__project.register_view(self)
 

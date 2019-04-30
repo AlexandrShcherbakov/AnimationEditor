@@ -1,0 +1,127 @@
+# Russian translations for PACKAGE package
+# Английские переводы для пакета PACKAGE.
+# Copyright (C) 2019 ORGANIZATION
+# NeCola <necola@vedro>, 2019.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2019-04-28 22:49+MSK\n"
+"PO-Revision-Date: 2019-04-28 22:53+0300\n"
+"Last-Translator: NeCola <necola@vedro>\n"
+"Language-Team: Russian\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: pygettext.py 1.5\n"
+"Language: ru\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+
+#: editor_view.py:28 editor_view.py:39 editor_view.py:90 editor_view.py:148
+msgid "Name:"
+msgstr "Имя:"
+
+#: editor_view.py:45 editor_view.py:96 editor_view.py:206
+msgid "Position:"
+msgstr "Положение:"
+
+#: editor_view.py:54 editor_view.py:105 editor_view.py:214
+msgid "Thickness:"
+msgstr "Толщина:"
+
+#: editor_view.py:72 editor_view.py:234
+msgid "Radius:"
+msgstr "Радиус:"
+
+#: editor_view.py:111
+msgid "Color:"
+msgstr "Цвет:"
+
+#: editor_view.py:123 editor_view.py:241
+msgid "Length:"
+msgstr "Длина:"
+
+#: editor_view.py:129 editor_view.py:248
+msgid "Rotation:"
+msgstr "Поворот:"
+
+#: editor_view.py:154
+msgid "Skeleton name:"
+msgstr "Имя скелета:"
+
+#: editor_view.py:166
+msgid "Transition:"
+msgstr "Переход:"
+
+#: editor_view.py:273
+msgid "Save"
+msgstr "Сохранить"
+
+#: main.py:27
+msgid "Animation creator"
+msgstr "Редактор Анимаций"
+
+#: main.py:39
+msgid "Open Project"
+msgstr "Открыть проект"
+
+#: main.py:40
+msgid "Save Project"
+msgstr "Сохранить проект"
+
+#: main.py:41
+msgid "Exit"
+msgstr "Выход"
+
+#: main.py:42
+msgid "File"
+msgstr "Файл"
+
+#: main.py:45
+msgid "Redo"
+msgstr "Повторить"
+
+#: main.py:46
+msgid "Undo"
+msgstr "Отменить"
+
+#: main.py:49
+msgid "Animation"
+msgstr "Анимация"
+
+#: main.py:52
+msgid "State"
+msgstr "Состояние"
+
+#: main.py:55
+msgid "Skeleton"
+msgstr "Скелет"
+
+#: main.py:58
+msgid "Line bone"
+msgstr "Кость"
+
+#: main.py:61
+msgid "Circle bone"
+msgstr "Череп"
+
+#: main.py:65
+msgid "Add"
+msgstr "Добавить"
+
+#: main.py:66
+msgid "Edit"
+msgstr "Редактировать"
+
+#: main.py:69 main.py:70
+msgid "Help"
+msgstr "Помощь"
+
+#: tree.py:21
+msgid "Animations"
+msgstr "Анимации"
+
+#: tree.py:22
+msgid "Skeletons"
+msgstr "Скелеты"
