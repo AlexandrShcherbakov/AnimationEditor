@@ -105,13 +105,13 @@ class MainWindow(tkinter.Tk):
         for i in range(TYPES_TO_ADD):
             self.add_menu.entryconfig(i, state="disabled")
         if isinstance(model.active_element, Skeleton):
-            self.add_menu.entryconfig("Line bone", state="normal")
-            self.add_menu.entryconfig("Circle bone", state="normal")
+            self.add_menu.entryconfig(_("Line bone"), state="normal")
+            self.add_menu.entryconfig(_("Circle bone"), state="normal")
         if isinstance(model.active_element, Project):
-            self.add_menu.entryconfig("Animation", state="normal")
-            self.add_menu.entryconfig("Skeleton", state="normal")
+            self.add_menu.entryconfig(_("Animation"), state="normal")
+            self.add_menu.entryconfig(_("Skeleton"), state="normal")
         if isinstance(model.active_element, Animation):
-            self.add_menu.entryconfig("State", state="normal")
+            self.add_menu.entryconfig(_("State"), state="normal")
 
 
 if __name__ == "__main__":

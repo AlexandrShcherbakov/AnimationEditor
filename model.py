@@ -514,7 +514,7 @@ class SkeletonState:
         :return: None
         >>> skeleton = Skeleton(name="Ivan_Vasil'evich")
         >>> skeleton.load('TestProject')
-        >>> state = SkeletonState(skeleton, updates={9: dict(radius=100)})
+        >>> state = SkeletonState(skeleton, updates=[dict() for i in range(9)] + [dict(radius=100)])
         >>> state.apply()
         >>> fixture = fixtures.skeleton_loaded_fixture
         >>> fixture['bones'][9]['radius'] = 100

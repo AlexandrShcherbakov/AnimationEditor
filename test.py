@@ -8,4 +8,4 @@ mods_to_test = [
 
 if __name__ == '__main__':
     for mod in mods_to_test:
-        doctest.testmod(mod, verbose=True)
+        doctest.testmod(mod, verbose=False)
